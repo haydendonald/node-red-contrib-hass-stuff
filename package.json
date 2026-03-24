@@ -1,7 +1,7 @@
 {
-  "name": "node-red-contrib-typescript-template",
+  "name": "node-red-contrib-hass-stuff",
   "version": "0.0.1",
-  "description": "Node-RED typescript template for creating nodes",
+  "description": "A collection of stuff I use on my Node Red + Home Assistant server. This could be of use for others, i don't know..",
   "devDependencies": {
     "@types/node": "^18.14.0",
     "@types/node-red": "^1.2.1",
@@ -11,17 +11,14 @@
     "build": "tsc"
   },
   "keywords": [
-    "node-red",
-    "typescript",
-    "template",
-    "node-template",
-    "flow-programming"
+    "node-red"
   ],
-  "author": "Doth-J",
+  "author": "Hayden Donald",
   "license": "ISC",
   "node-red": {
     "nodes": {
-      "node": "nodes/node.js"
+      "LightControl": "nodes/LightControl/node.js",
+      "LightControlConfig": "nodes/LightControl/config.js"
     }
   }
 }
