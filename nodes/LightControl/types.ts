@@ -7,6 +7,5 @@ export interface LightControlNodeConfig extends NodeRED.NodeDef {
 }
 export interface LightControlNode extends BaseNode { }
 
-
-export interface LightControlConfigNodeConfig extends NodeRED.NodeDef { }
+export interface LightControlConfigNodeConfig extends NodeRED.NodeDef {}
 export interface LightControlConfigNode extends BaseConfigNode { }

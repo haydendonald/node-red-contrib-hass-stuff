@@ -17,6 +17,7 @@
   "license": "ISC",
   "node-red": {
     "nodes": {
+      "ConnectionsNode": "nodes/ConnectionsNode/node.js",
       "LightControl": "nodes/LightControl/node.js",
       "LightControlConfig": "nodes/LightControl/config.js"
     }

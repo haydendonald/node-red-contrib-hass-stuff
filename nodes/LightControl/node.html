@@ -7,7 +7,9 @@
         icon: "bulb.svg",
         defaults: {
             name: { value: "" },
-            configNode: { value: '', type: "light-control-config", required: true },
+            lightControlConfig: { value: '', type: "light-control-config", required: false },
+            configNode: { value: '', type: "server", required: false },
+
         },
         label: function () {
             return this.name || "Light Control"
@@ -21,6 +23,11 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+    <div class="form-row">
+        <label for="node-input-lightControlConfig">Config</label>
+        <input type="text" id="node-input-lightControlConfig" />
+    </div>
+    
     <div class="form-row">
         <label for="node-input-configNode">Config</label>
         <input type="text" id="node-input-configNode" />
