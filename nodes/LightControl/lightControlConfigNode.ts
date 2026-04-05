@@ -166,6 +166,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                     ...Object.values(scenes).map(scene => scene.friendlyName),
                     "Adaptive"
                 ],
+                defaultState: "Adaptive",
                 creationCallback: (state) => {
                     currentSceneState = state;
                     runLights(300, false);
