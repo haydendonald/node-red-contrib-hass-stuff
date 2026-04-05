@@ -406,6 +406,23 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             }
         }
 
+        self.sendCompanionNotification = function (options: {
+            entityIds: string[],
+            message: string,
+            title?: string,
+            target?: any,
+            data?: any
+        }) {
+            for (const entityId of options.entityIds) {
+                self.sendHASSAction(entityId, undefined, {
+                    message: options.message,
+                    title: options.title,
+                    target: options.target,
+                    data: options.data
+                });
+            }
+        }
+
         self.handleCallback = function <T extends any[]>(callbacks: Record<string, (...args: T) => void>, callbackId?: string, ...args: T) {
             //This is a specific callback id
             if (callbackId) {

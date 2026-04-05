@@ -190,6 +190,23 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
             outputResultsCount?: number
         }
     ], callback?: (entities: any[]) => void) => void;
+
+    /**
+     * Send notification to a companion app
+     * @param options The options for the notification
+     * @param options.entityIds The entity IDs to send the notification to for example notify.mobile_app_haydens_iphone
+     * @param options.message The message to send
+     * @param options.title The title of the notification
+     * @param options.target The target(s) of the notification
+     * @param options.data The data to include in the notification
+     */
+    sendCompanionNotification: (options: {
+        entityIds: string[],
+        message: string,
+        title?: string,
+        target?: any
+        data?: any
+    }) => void;
 }
 
 export interface ConnectionsMsg extends NodeRED.NodeMessage {
