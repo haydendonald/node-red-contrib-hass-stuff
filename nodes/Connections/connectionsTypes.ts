@@ -64,12 +64,14 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
  * @param options.friendlyName The friendly name of the button
  * @param options.id The id of the button button.[id]. If not set will be friendly_name
  * @param options.state The default state of the button. Default is "unknown"
+ * @param options.defaultState The default state of the button. Default is "unknown"
  * @param options.creationCallback The callback for when a response comes back in
  */
     addHASSButton: (options: {
         friendlyName: string,
         id?: string,
         state?: string,
+        defaultState?: any,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
         pressedCallback?: (state: any, serviceData: any) => void
     }) => void;
@@ -80,6 +82,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
      * @param options.friendlyName The friendly name of the scene
      * @param options.id The id of the scene scene.[id]. If not set will be friendly_name
      * @param options.state The default state of the scene. Default is "unknown"
+     * @param options.defaultState The default state of the scene. Default is "unknown"
      * @param options.creationCallback The callback for when a response comes back in
      * @param options.pressedCallback The callback for when the scene is activated
      */
@@ -87,6 +90,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
         friendlyName: string,
         id?: string,
         state?: string,
+        defaultState?: any,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
         activatedCallback?: (state: any, serviceData: any) => void
     }) => void;
@@ -96,6 +100,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
      * @param options.friendlyName The friendly name of the select
      * @param options.id The id of the select select.[id]. If not set will be friendly_name
      * @param options.state The default state of the select. Default is "unknown"
+     * @param options.defaultState The default state of the select. Default is "unknown"
      * @param options.creationCallback The callback for when a response comes back in
      * @param options.activatedCallback The callback for when the select is activated
      */
@@ -103,6 +108,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
         friendlyName: string,
         id?: string,
         state?: string,
+        defaultState?: any,
         options: string[],
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
         activatedCallback?: (state: any, serviceData: any) => void

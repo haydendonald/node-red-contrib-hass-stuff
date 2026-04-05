@@ -130,15 +130,21 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             friendlyName: string,
             id?: string,
             state?: string,
+            defaultState?: string,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             changedCallback?: (state: any, serviceData: any) => void
         }) {
-            let currentState: string = options.state || "unknown";
+            let currentState: string = options.state || options.state || options.defaultState || "unknown";
 
             const entityId = options.id ? options.id : getEntityId("input_boolean", options.friendlyName);
             const data = (state: any) => {
+                //If the state is not set, set it to the default state, otherwise "unknown"
+                let setState = state;
+                if (setState === undefined || setState == "unknown") { setState = options.defaultState; }
+                if (setState === undefined) { setState = "unknown"; }
+
                 return {
-                    state: state || "unknown",
+                    state: setState,
                     attributes: {
                         friendly_name: options.friendlyName
                     }
@@ -149,7 +155,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
                 if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
 
-                const previousState = entities.length == 1 ? entities[0].state : "unknown";
+                const previousState = entities.length == 1 ? entities[0].state : undefined;
                 self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
@@ -184,13 +190,19 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             friendlyName: string,
             id?: string,
             state?: string,
+            defaultState?: string,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             pressedCallback?: (state: any, serviceData: any) => void
         }) {
             const entityId = options.id ?? getEntityId("button", options.friendlyName);
             const data = (state: any) => {
+                //If the state is not set, set it to the default state, otherwise "unknown"
+                let setState = state;
+                if (setState === undefined || setState == "unknown") { setState = options.defaultState; }
+                if (setState === undefined) { setState = "unknown"; }
+
                 return {
-                    state: state || "unknown",
+                    state: setState,
                     attributes: {
                         friendly_name: options.friendlyName
                     }
@@ -201,7 +213,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
                 if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
 
-                const previousState = entities.length == 1 ? entities[0].state : "unknown";
+                const previousState = entities.length == 1 ? entities[0].state : undefined;
                 self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
@@ -227,13 +239,19 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             friendlyName: string,
             id?: string,
             state?: string,
+            defaultState?: string,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             activatedCallback?: (state: any, serviceData: any) => void
         }) {
             const entityId = options.id || getEntityId("scene", options.friendlyName);
             const data = (state: any) => {
+                //If the state is not set, set it to the default state, otherwise "unknown"
+                let setState = state;
+                if (setState === undefined || setState == "unknown") { setState = options.defaultState; }
+                if (setState === undefined) { setState = "unknown"; }
+
                 return {
-                    state: state || "unknown",
+                    state: setState,
                     attributes: {
                         friendly_name: options.friendlyName
                     }
@@ -244,7 +262,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
                 if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
 
-                const previousState = entities.length == 1 ? entities[0].state : "unknown";
+                const previousState = entities.length == 1 ? entities[0].state : undefined;
                 self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
@@ -272,14 +290,20 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             friendlyName: string,
             id?: string,
             state?: string,
+            defaultState?: string,
             options: string[],
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             activatedCallback?: (state: any, serviceData: any) => void
         }) {
             const entityId = options.id || getEntityId("select", options.friendlyName);
-            const data = (state: string) => {
+            const data = (state: any) => {
+                //If the state is not set, set it to the default state, otherwise "unknown"
+                let setState = state;
+                if (setState === undefined || setState == "unknown") { setState = options.defaultState; }
+                if (setState === undefined) { setState = "unknown"; }
+
                 return {
-                    state: state || "unknown",
+                    state: setState,
                     attributes: {
                         friendly_name: options.friendlyName,
                         options: options.options
@@ -291,7 +315,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
                 if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
 
-                const previousState = entities.length == 1 ? entities[0].state : "unknown";
+                const previousState = entities.length == 1 ? entities[0].state : undefined;
                 self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
