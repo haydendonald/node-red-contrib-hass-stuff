@@ -40,7 +40,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
      * @param msg The message to send
      * @param recipientIds The ids to send to 
      */
-    handleCallback: <T extends any[]>(callbacks: Record<string, (...args: T) => void>, callbackId?: string, ...args: T) => void;
+    handleCallback: <T extends any[]>(callbacks: Record<string, (...args: T) => void>, callbackId: string, ...args: T) => void;
 
     /**
      * Add an entity to HASS
@@ -210,5 +210,5 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
 }
 
 export interface ConnectionsMsg extends NodeRED.NodeMessage {
-    callbackId?: string
+    callbackId: string
 }

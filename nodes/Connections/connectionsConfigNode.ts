@@ -21,7 +21,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
         self.hassEventStateChangeCallbacks = {};
 
         self.sendHASSAPI = function (protocol: "http" | "websocket", method: "get" | "post", path: string, callback?: (response: NodeRED.NodeMessage) => void, params?: any, data?: any, results?: string) {
-            const callbackId = callback ? generateRandomId(Object.keys(self.hassAPICallbacks)) : undefined;
+            const callbackId = generateRandomId(Object.keys(self.hassAPICallbacks));
 
             const msg: ConnectionsMsg = {
                 topic: Topics.API,
@@ -38,7 +38,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             self.sendMsg(msg);
 
             //Add our callback for when a response comes back in
-            if (callbackId && callback) {
+            if (callback) {
                 self.hassAPICallbacks[callbackId] = callback;
             }
         }
@@ -54,7 +54,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             device_id?: string[],
             entity_id?: string[]
         }, data: any) => void) {
-            const callbackId = callback ? generateRandomId(Object.keys(self.hassActionCallbacks)) : undefined;
+            const callbackId = generateRandomId(Object.keys(self.hassActionCallbacks));
 
             const msg: ConnectionsMsg = {
                 topic: Topics.ACTION,
@@ -68,13 +68,13 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             self.sendMsg(msg);
 
             //Add our callback for when a response comes back in
-            if (callbackId && callback) {
+            if (callback) {
                 self.hassActionCallbacks[callbackId] = callback;
             }
         }
 
         self.getHASSEntityState = function (entityId: string, callback?: (payload: any, data: any) => void) {
-            const callbackId = callback ? generateRandomId(Object.keys(self.hassCurrentStateCallbacks)) : undefined;
+            const callbackId = generateRandomId(Object.keys(self.hassCurrentStateCallbacks));
 
             const msg: ConnectionsMsg = {
                 topic: Topics.STATE,
@@ -86,7 +86,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             self.sendMsg(msg);
 
             //Add our callback for when a response comes back in
-            if (callbackId && callback) {
+            if (callback) {
                 self.hassCurrentStateCallbacks[callbackId] = callback;
             }
         }
@@ -105,7 +105,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
                 outputResultsCount?: number
             }
         ], callback?: (entities: any[]) => void) {
-            const callbackId = callback ? generateRandomId(Object.keys(self.hassGetEntitiesCallbacks)) : undefined;
+            const callbackId = generateRandomId(Object.keys(self.hassGetEntitiesCallbacks));
 
             const msg: ConnectionsMsg = {
                 topic: Topics.GET_ENTITIES,
@@ -117,7 +117,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             self.sendMsg(msg);
 
             //Add our callback for when a response comes back in
-            if (callbackId && callback) {
+            if (callback) {
                 self.hassGetEntitiesCallbacks[callbackId] = callback;
             }
         }
@@ -423,13 +423,16 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             }
         }
 
-        self.handleCallback = function <T extends any[]>(callbacks: Record<string, (...args: T) => void>, callbackId?: string, ...args: T) {
+        self.handleCallback = function <T extends any[]>(callbacks: Record<string, (...args: T) => void>, callbackId: string, ...args: T) {
             //This is a specific callback id
-            if (callbackId) {
-                callbacks[callbackId]?.(...args);
+            if (callbacks[callbackId]) {
+                callbacks[callbackId](...args);
                 delete callbacks[callbackId];
                 return;
             }
+
+            //We failed to find the callback, so it must not exist
+            if (callbackId !== undefined) { return; }
 
             //Send to everyone
             for (const id of Object.keys(callbacks)) {
