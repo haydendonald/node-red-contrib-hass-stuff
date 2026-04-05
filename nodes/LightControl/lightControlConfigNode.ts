@@ -289,7 +289,10 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                     if (currentHour >= 23 || currentHour < 6) {
                         scene = scenes["nightLight"];
                     }
-                    else if (currentHour >= 6 && currentHour < 8) {
+                    else if (currentHour >= 6 && currentHour < 7) {
+                        scene = scenes["rest"];
+                    }
+                    else if (currentHour >= 7 && currentHour < 8) {
                         scene = scenes["relax"];
                     }
                     else if (currentHour >= 8 && currentHour < 10) {
@@ -298,11 +301,14 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                     else if (currentHour >= 10 && currentHour < 15) {
                         scene = scenes["concentrate"];
                     }
-                    else if (currentHour >= 15 && currentHour < 20) {
+                    else if (currentHour >= 15 && currentHour < 19) {
+                        scene = scenes["read"];
+                    }
+                    else if (currentHour >= 19 && currentHour < 20) {
                         scene = scenes["relax"];
                     }
                     else if (currentHour >= 20 && currentHour < 23) {
-                        scene = scenes["read"];
+                        scene = scenes["rest"];
                     }
                 }
             }
