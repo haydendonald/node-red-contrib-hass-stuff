@@ -104,7 +104,6 @@ export = function EVChargingPriceNode(RED: NodeRED.NodeAPI) {
                         finishedChargingAt = undefined;
                     }
                     else {
-                        startedChargingAt = oldState.last_changed;
                         finishedChargingAt = newState.last_changed;
                     }
 
@@ -155,7 +154,7 @@ export = function EVChargingPriceNode(RED: NodeRED.NodeAPI) {
                 let timeInPeakMs = 0;
                 let timeInOffPeakMs = 0;
 
-                let currentTime = new Date();
+                let currentTime = new Date(startDate);
                 while (currentTime < endDate) {
                     // Find the next hour boundary or end of charging period
                     const nextHourBoundary = new Date(currentTime);
