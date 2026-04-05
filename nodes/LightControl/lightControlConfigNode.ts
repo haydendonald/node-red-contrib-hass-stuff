@@ -15,7 +15,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
         const self = this;
 
         let groupEntities: string[] = [];
-        let currentState: string;
+        let currentState: any;
         let nightModeState: string;
         let currentSceneState: string;
         let sunState: string;
@@ -200,7 +200,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
 
         const activateScene = (scene: Scene, transitionSec: number, turnLightsOn: boolean, entitiesOn?: string[], entitiesOff?: string[]) => {
             //If the lights are off and we are not to turn the lights on don't do anything
-            if (turnLightsOn == false && currentState == "off") {
+            if (turnLightsOn == false && currentState.state == "off") {
                 return;
             }
 
