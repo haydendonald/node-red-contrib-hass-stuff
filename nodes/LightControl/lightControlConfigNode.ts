@@ -158,6 +158,23 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 }
             });
 
+            //Add our toggle scene
+            connectionsConfigNode.addHASSScene({
+                friendlyName: `${self.name} - Toggle`,
+                id: getEntityId("scene", `${self.name}_toggle`),
+                creationCallback: (response) => { },
+                activatedCallback: (serviceData: any) => {
+                    if (currentState.state == "off") {
+                        runLights(serviceData.transition || 1, true);
+                    }
+                    else {
+                        connectionsConfigNode.sendHASSAction("light.turn_off", { entity_id: [config.groupEntityId] }, {
+                            transition: serviceData.transition || 1
+                        });
+                    }
+                }
+            });
+
             //Add our select to keep track of what scene we are running
             connectionsConfigNode.addHASSSelect({
                 friendlyName: `${self.name} - Current Scene`,
