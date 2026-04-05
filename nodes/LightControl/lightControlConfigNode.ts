@@ -60,6 +60,11 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 sceneName: config.relaxSettings.split(" ")[0],
                 brightnessPct: parseInt(config.relaxSettings.split(" ")[1])
             },
+            rest: {
+                friendlyName: "Rest",
+                sceneName: config.restSettings.split(" ")[0],
+                brightnessPct: parseInt(config.restSettings.split(" ")[1])
+            },
             nightLight: {
                 friendlyName: "Night Light",
                 sceneName: config.nightLightSettings.split(" ")[0],
@@ -304,10 +309,10 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                     else if (currentHour >= 15 && currentHour < 19) {
                         scene = scenes["read"];
                     }
-                    else if (currentHour >= 19 && currentHour < 20) {
+                    else if (currentHour >= 19 && currentHour < 22) {
                         scene = scenes["relax"];
                     }
-                    else if (currentHour >= 20 && currentHour < 23) {
+                    else if (currentHour >= 22 && currentHour < 23) {
                         scene = scenes["rest"];
                     }
                 }
