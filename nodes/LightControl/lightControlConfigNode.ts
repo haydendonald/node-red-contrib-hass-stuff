@@ -87,7 +87,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
             //Get what entities exist in the group and set our internal state
             connectionsConfigNode.getHASSEntityState(config.groupEntityId, (payload, data) => {
                 groupEntities = data.data.attributes.entity_id;
-                currentState = data.data.state;
+                currentState = data.data;
                 entitiesOffDuringNight = config.entitiesOffAtNight.split(",");
                 entitiesOnDuringNight = groupEntities.filter((entity: string) => !entitiesOffDuringNight.includes(entity));
             });
