@@ -1,14 +1,14 @@
 import * as NodeRED from "node-red";
 
 export interface BaseConfigNode extends NodeRED.Node {
-    msgCallbacks: Record<string, (msg: NodeRED.NodeMessage) => void>;
+    msgCallbacks: Record<string, (msg: any) => void>;
 
     /**
      * Add a msg callback
      * @param id The node id
      * @param callback The callback
      */
-    addMsgCallback(id: string, callback: (msg: NodeRED.NodeMessage) => void): void;
+    addMsgCallback(id: string, callback: (msg: any) => void): void;
 
     /**
      * Remove a msg callback
@@ -21,19 +21,19 @@ export interface BaseConfigNode extends NodeRED.Node {
      * @param msg The msg to send
      * @param toIds What node ids to output on
      */
-    sendMsg(msg: NodeRED.NodeMessage, toIds?: string[]): void;
+    sendMsg(msg: any, toIds?: string[]): void;
 
     /**
      * When a msg is sent to a nodes input
      * @param msg The msg
      * @param senderIds What node ids this msg came from
      */
-    msgReceived(msg: NodeRED.NodeMessage, senderIds?: string[]): void;
+    msgReceived(msg: any, senderIds?: string[]): void;
 }
 export function assignBaseConfigNode(node: BaseConfigNode) {
     node.msgCallbacks = {};
 
-    node.addMsgCallback = function (id: string, callback: (msg: NodeRED.NodeMessage) => void) {
+    node.addMsgCallback = function (id: string, callback: (msg: any) => void) {
         node.msgCallbacks[id] = callback;
     }
 
@@ -41,7 +41,7 @@ export function assignBaseConfigNode(node: BaseConfigNode) {
         delete node.msgCallbacks[id];
     }
 
-    node.sendMsg = function (msg: NodeRED.NodeMessage, toIds?: string[]) {
+    node.sendMsg = function (msg: any, toIds?: string[]) {
         if (toIds) {
             toIds.forEach(id => {
                 node.msgCallbacks[id]?.(msg);
@@ -51,5 +51,5 @@ export function assignBaseConfigNode(node: BaseConfigNode) {
         Object.values(node.msgCallbacks).forEach(callback => callback(msg));
     }
 
-    node.msgReceived = function (msg: NodeRED.NodeMessage, senderIds?: string[]) { }
+    node.msgReceived = function (msg: any, senderIds?: string[]) { }
 }
