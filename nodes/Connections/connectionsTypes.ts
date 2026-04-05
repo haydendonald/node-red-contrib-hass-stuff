@@ -115,6 +115,24 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
     }) => void;
 
     /**
+    * Add a sensor entity to HASS
+    * @param options.friendlyName The friendly name of the sensor
+    * @param options.id The id of the sensor sensor.[id]. If not set will be friendly_name
+    * @param options.state The default state of the sensor. Default is "unknown"
+    * @param options.defaultState The default state of the sensor. Default is "unknown"
+    * @param options.creationCallback The callback for when a response comes back in
+    * @returns Function to set the sensor value
+    */
+    addHASSSensor: (options: {
+        friendlyName: string,
+        id?: string,
+        state?: any,
+        defaultState?: any,
+        creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
+        changedCallback?: (state: any) => void
+    }) => (state: any) => void;
+
+    /**
      * Send a message to the HASS API Node
      * @param protocol The protocol to use
      * @param method The method to use

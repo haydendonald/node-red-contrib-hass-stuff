@@ -364,6 +364,48 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             }
         }
 
+        self.addHASSSensor = function (options: {
+            friendlyName: string,
+            id?: string,
+            state?: any,
+            defaultState?: any,
+            creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
+            changedCallback?: (state: any) => void
+        }) {
+            const entityId = options.id ?? getEntityId("number", options.friendlyName);
+            const data = (state: any) => {
+                //If the state is not set, set it to the default state, otherwise "unknown"
+                let setState = state;
+                if (setState === undefined || setState == "unknown") { setState = options.defaultState; }
+                if (setState === undefined) { setState = "unknown"; }
+
+                return {
+                    state: setState,
+                    attributes: {
+                        friendly_name: options.friendlyName
+                    }
+                }
+            };
+
+            //Add the button to HASS
+            self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
+                if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
+
+                const previousState = entities.length == 1 ? entities[0].state : undefined;
+                self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
+                    options.creationCallback!(response.payload.state, response);
+                } : undefined);
+            });
+
+            return (state: any) => {
+                self.sendHASSAPI("http", "post", "/api/states/" + entityId, undefined, undefined, data(state));
+
+                if (options.changedCallback) {
+                    options.changedCallback(state);
+                }
+            }
+        }
+
         self.handleCallback = function <T extends any[]>(callbacks: Record<string, (...args: T) => void>, callbackId?: string, ...args: T) {
             //This is a specific callback id
             if (callbackId) {
