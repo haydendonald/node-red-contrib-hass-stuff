@@ -511,7 +511,6 @@ A node that controls lights with general scenes that adjust throughout the day w
 2. [HASS Sun](https://www.home-assistant.io/integrations/sun/)
 
 ## PIR
-*TODO*
 
 A node that simplifies control of a PIR
 

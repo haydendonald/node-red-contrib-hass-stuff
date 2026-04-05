@@ -28,7 +28,9 @@
       "ConnectionsNode": "dist/Connections/connectionsNode.js",
       "LightControlConfigNode": "dist/LightControl/lightControlConfigNode.js",
       "LightControlNode": "dist/LightControl/lightControlNode.js",
-      "EVChargingPriceNode": "dist/EVChargingPrice/EVChargingPriceNode.js"
+      "EVChargingPriceNode": "dist/EVChargingPrice/EVChargingPriceNode.js",
+      "PIRControlConfigNode": "dist/PIRControl/PIRControlConfigNode.js",
+      "PIRControlNode": "dist/PIRControl/PIRControlNode.js"
     }
   },
   "publishConfig": {

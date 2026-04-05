@@ -1,0 +1,68 @@
+<script type="text/javascript" id="node-PIR-control-config-node">
+    RED.nodes.registerType("PIR-control-config-node", {
+        category: "config",
+        defaults: {
+            name: { value: "", required: true },
+            connectionsConfigNode: { value: "", type: "connections-config-node", required: true },
+            PIROccupancyEntity: { value: "", required: true },
+            luminanceEntity: { value: "", required: false },
+            minBrightnessLevel: { value: "", required: false },
+            maxBrightnessLevel: { value: "", required: false },
+            turnOffAfterMs: { value: "0", default: "0", required: true },
+            turnOnAfterMs: { value: "0", default: "0", required: true },
+            enabledByDefault: { value: true, default: true, required: true }
+        },
+        label: function () {
+            return this.name || "PIR Control Config"
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="PIR-control-config-node">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-connectionsConfigNode">Config</label>
+        <input type="text" id="node-config-input-connectionsConfigNode" />
+    </div>
+    <div class="form-row">
+        <p>The entity id of the PIR occupancy sensor</p>
+        <label for="node-config-input-PIROccupancyEntity">PIR Occupancy Entity</label>
+        <input type="text" id="node-config-input-PIROccupancyEntity" />
+    </div>
+    <div class="form-row">
+        <p>The entity id of the luminance sensor. If not set will disable this feature</p>
+        <label for="node-config-input-luminanceEntity">Luminance Entity</label>
+        <input type="text" id="node-config-input-luminanceEntity" />
+    </div>
+    <div class="form-row">
+        <p>The minimum brightness level of the luminance sensor to trigger the PIR. If not set will disable this feature</p>
+        <label for="node-config-input-minBrightnessLevel">Min Brightness Level</label>
+        <input type="number" id="node-config-input-minBrightnessLevel" />
+    </div>
+    <div class="form-row">
+        <p>The maximum brightness level of the luminance sensor to trigger the PIR. If not set will disable this feature</p>
+        <label for="node-config-input-maxBrightnessLevel">Max Brightness Level</label>
+        <input type="number" id="node-config-input-maxBrightnessLevel" />
+    </div>
+    <div class="form-row">
+        <p>The minimum time in milliseconds of no detection before triggering the "not detected" output</p>
+        <label for="node-config-input-turnOffAfterMs">Turn Off After (ms)</label>
+        <input type="number" id="node-config-input-turnOffAfterMs" />
+    </div>
+    <div class="form-row">
+        <p>The minimum time in milliseconds of detection before triggering the "detected" output</p>
+        <label for="node-config-input-turnOnAfterMs">Turn On After (ms)</label>
+        <input type="number" id="node-config-input-turnOnAfterMs" />
+    </div>
+    <div class="form-row">
+        <p>The default state of the enabled boolean entity when it's added to Home Assistant</p>
+        <label for="node-config-input-enabledByDefault">Enabled By Default</label>
+        <input type="checkbox" id="node-config-input-enabledByDefault" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="PIR-control-config-node">
+</script>
