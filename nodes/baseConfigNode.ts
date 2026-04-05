@@ -26,9 +26,9 @@ export interface BaseConfigNode extends NodeRED.Node {
     /**
      * When a msg is sent to a nodes input
      * @param msg The msg
-     * @param fromId What node this msg came from
+     * @param senderIds What node ids this msg came from
      */
-    msgReceived(msg: NodeRED.NodeMessage, fromId?: string): void;
+    msgReceived(msg: NodeRED.NodeMessage, senderIds?: string[]): void;
 }
 export function assignBaseConfigNode(node: BaseConfigNode) {
     node.msgCallbacks = {};
@@ -51,5 +51,5 @@ export function assignBaseConfigNode(node: BaseConfigNode) {
         Object.values(node.msgCallbacks).forEach(callback => callback(msg));
     }
 
-    node.msgReceived = function (msg: NodeRED.NodeMessage, fromId?: string) { }
+    node.msgReceived = function (msg: NodeRED.NodeMessage, senderIds?: string[]) { }
 }
