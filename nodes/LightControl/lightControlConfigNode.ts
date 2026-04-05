@@ -115,7 +115,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                     friendlyName: `${self.name} - ${sceneValue.friendlyName}`,
                     id: getEntityId("scene", `${self.name}_${sceneKey}`),
                     creationCallback: (response) => { },
-                    activatedCallback: (state: any, serviceData: any) => {
+                    activatedCallback: (state: any, serviceData: any, response: NodeRED.NodeMessage) => {
                         //Set our scene
                         connectionsConfigNode.sendHASSAction("select.select_option", { entity_id: [getEntityId("select", `${self.name}_current_scene`)] }, {
                             option: sceneValue.friendlyName
@@ -131,7 +131,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 friendlyName: `${self.name} - Adaptive`,
                 id: getEntityId("scene", `${self.name}_adaptive`),
                 creationCallback: (response) => { },
-                activatedCallback: (state: any, serviceData: any) => {
+                activatedCallback: (state: any, serviceData: any, response: NodeRED.NodeMessage) => {
                     //Set our scene to adaptive
                     connectionsConfigNode.sendHASSAction("select.select_option", { entity_id: [getEntityId("select", `${self.name}_current_scene`)] }, {
                         option: "Adaptive"
@@ -146,7 +146,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 friendlyName: `${self.name} - Turn On`,
                 id: getEntityId("scene", `${self.name}_turn_on`),
                 creationCallback: (response) => { },
-                activatedCallback: (state: any,serviceData: any) => {
+                activatedCallback: (state: any, serviceData: any, response: NodeRED.NodeMessage) => {
                     runLights(serviceData.transition || 1, true);
                 }
             });
@@ -156,7 +156,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 friendlyName: `${self.name} - Turn Off`,
                 id: getEntityId("scene", `${self.name}_turn_off`),
                 creationCallback: (response) => { },
-                activatedCallback: (state: any,serviceData: any) => {
+                activatedCallback: (state: any, serviceData: any, response: NodeRED.NodeMessage) => {
                     connectionsConfigNode.sendHASSAction("light.turn_off", { entity_id: [config.groupEntityId] }, {
                         transition: serviceData.transition || 1
                     });
@@ -168,7 +168,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 friendlyName: `${self.name} - Toggle`,
                 id: getEntityId("scene", `${self.name}_toggle`),
                 creationCallback: (response) => { },
-                activatedCallback: (state: any, serviceData: any) => {
+                activatedCallback: (state: any, serviceData: any, response: NodeRED.NodeMessage) => {
                     if (currentState.state == "off") {
                         runLights(serviceData.transition || 1, true);
                     }
@@ -189,11 +189,11 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                     "Adaptive"
                 ],
                 defaultState: "Adaptive",
-                creationCallback: (state) => {
+                creationCallback: (state: any, response: NodeRED.NodeMessage) => {
                     currentSceneState = state;
                     runLights(300, false);
                 },
-                activatedCallback: (state: string, serviceData: any) => {
+                activatedCallback: (state: string, serviceData: any, response: NodeRED.NodeMessage) => {
                     currentSceneState = state;
                 }
             });

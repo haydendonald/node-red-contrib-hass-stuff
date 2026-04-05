@@ -132,7 +132,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             state?: string,
             defaultState?: string,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-            changedCallback?: (state: any, serviceData: any) => void
+            changedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
         }) {
             let currentState: string = options.state || options.state || options.defaultState || "unknown";
 
@@ -178,9 +178,9 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
                         currentState = state;
 
                         //Tell HASS that the button was pressed
-                        self.sendHASSAPI("http", "post", "/api/states/" + entityId, undefined, undefined, data(currentState));
-
-                        options.changedCallback!(currentState, serviceData);
+                        self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
+                            options.changedCallback?.(currentState, serviceData, response);
+                        }, undefined, data(currentState));
                     }
                 }
             }
@@ -192,7 +192,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             state?: string,
             defaultState?: string,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-            pressedCallback?: (state: any, serviceData: any) => void
+            pressedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
         }) {
             const entityId = options.id ?? getEntityId("button", options.friendlyName);
             const data = (state: any) => {
@@ -227,9 +227,9 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
                         const state = new Date();
 
                         //Tell HASS that the button was pressed
-                        self.sendHASSAPI("http", "post", "/api/states/" + entityId, undefined, undefined, data(state));
-
-                        options.pressedCallback!(state, serviceData);
+                        self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
+                            options.pressedCallback?.(state, serviceData, response);
+                        }, undefined, data(state));
                     }
                 }
             }
@@ -241,7 +241,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             state?: string,
             defaultState?: string,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-            activatedCallback?: (state: any, serviceData: any) => void
+            activatedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
         }) {
             const entityId = options.id || getEntityId("scene", options.friendlyName);
             const data = (state: any) => {
@@ -278,9 +278,9 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
                         const state = new Date();
 
                         //Tell HASS that the scene was activated
-                        self.sendHASSAPI("http", "post", "/api/states/" + entityId, undefined, undefined, data(state));
-
-                        options.activatedCallback!(state, serviceData);
+                        self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
+                            options.activatedCallback?.(state, serviceData, response);
+                        }, undefined, data(state));
                     }
                 }
             }
@@ -293,7 +293,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             defaultState?: string,
             options: string[],
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-            activatedCallback?: (state: any, serviceData: any) => void
+            activatedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
         }) {
             const entityId = options.id || getEntityId("select", options.friendlyName);
             const data = (state: any) => {
@@ -329,16 +329,19 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
                         if (!entities.includes(entityId)) { return; }
 
                         if (service == "select_option") {
-                            self.sendHASSAPI("http", "post", "/api/states/" + entityId, undefined, undefined, data(serviceData.option));
-                            options.activatedCallback!(serviceData.option, serviceData);
+                            self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
+                                options.activatedCallback?.(serviceData.option, serviceData, response);
+                            }, undefined, data(serviceData.option));
                         }
                         else if (service == "select_first") {
-                            self.sendHASSAPI("http", "post", "/api/states/" + entityId, undefined, undefined, data(options.options[0] || "unknown"));
-                            options.activatedCallback!(options.options[0] || "unknown", serviceData);
+                            self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
+                                options.activatedCallback?.(options.options[0] || "unknown", serviceData, response);
+                            }, undefined, data(options.options[0] || "unknown"));
                         }
                         else if (service == "select_last") {
-                            self.sendHASSAPI("http", "post", "/api/states/" + entityId, undefined, undefined, data(options.options[options.options.length - 1] || "unknown"));
-                            options.activatedCallback!(options.options[options.options.length - 1] || "unknown", serviceData);
+                            self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
+                                options.activatedCallback?.(options.options[options.options.length - 1] || "unknown", serviceData, response);
+                            }, undefined, data(options.options[options.options.length - 1] || "unknown"));
                         }
                         else if (service == "select_previous" || service == "select_next") {
                             self.getHASSEntityState(entityId, (currentState) => {
@@ -355,8 +358,9 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
                                     if (index >= options.options.length && !serviceData.cycle) { index = options.options.length - 1; }
                                 }
 
-                                self.sendHASSAPI("http", "post", "/api/states/" + entityId, undefined, undefined, data(options.options[index] || "unknown"));
-                                options.activatedCallback!(options.options[index] || "unknown", serviceData);
+                                self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
+                                    options.activatedCallback?.(options.options[index] || "unknown", serviceData, response);
+                                }, undefined, data(options.options[index] || "unknown"));
                             });
                         }
                     }
@@ -370,7 +374,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             state?: any,
             defaultState?: any,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-            changedCallback?: (state: any) => void
+            changedCallback?: (state: any, response: NodeRED.NodeMessage) => void
         }) {
             const entityId = options.id ?? getEntityId("number", options.friendlyName);
             const data = (state: any) => {
@@ -398,11 +402,9 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             });
 
             return (state: any) => {
-                self.sendHASSAPI("http", "post", "/api/states/" + entityId, undefined, undefined, data(state));
-
-                if (options.changedCallback) {
-                    options.changedCallback(state);
-                }
+                self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
+                    options.changedCallback?.(state, response);
+                }, undefined, data(state));
             }
         }
 

@@ -56,7 +56,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
         id?: string,
         defaultState?: string,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-        changedCallback?: (state: any, serviceData: any) => void
+        changedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
     }) => void;
 
     /**
@@ -73,7 +73,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
         state?: string,
         defaultState?: any,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-        pressedCallback?: (state: any, serviceData: any) => void
+        pressedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
     }) => void;
 
 
@@ -92,7 +92,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
         state?: string,
         defaultState?: any,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-        activatedCallback?: (state: any, serviceData: any) => void
+        activatedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
     }) => void;
 
     /**
@@ -111,7 +111,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
         defaultState?: any,
         options: string[],
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-        activatedCallback?: (state: any, serviceData: any) => void
+        activatedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
     }) => void;
 
     /**
@@ -129,7 +129,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
         state?: any,
         defaultState?: any,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
-        changedCallback?: (state: any) => void
+        changedCallback?: (state: any, response: NodeRED.NodeMessage) => void
     }) => (state: any) => void;
 
     /**
