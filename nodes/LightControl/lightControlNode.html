@@ -1,0 +1,30 @@
+<script type="text/javascript" id="node-light-control-node">
+    RED.nodes.registerType("light-control-node", {
+        category: "HASS Stuff",
+        color: "#ffcc00",
+        inputs: 1,
+        outputs: 1,
+        icon: "bulb.svg",
+        defaults: {
+            name: { value: "" },
+            lightControlConfigNode: { value: '', type: "light-control-config-node", required: true }
+        },
+        label: function () {
+            return this.name || "Light Control"
+        }
+    });
+</script>
+
+
+<script type="text/html" data-template-name="light-control-node">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-lightControlConfigNode">Config</label>
+        <input type="text" id="node-input-lightControlConfigNode" />
+    </div>
+</script>
+<script type="text/html" data-help-name="light-control-node">
+</script>

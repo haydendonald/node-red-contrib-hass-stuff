@@ -1,0 +1,109 @@
+<script type="text/javascript" id="node-light-control-config-node">
+    RED.nodes.registerType("light-control-config-node", {
+        category: "config",
+        defaults: {
+            name: { value: "" },
+            connectionsConfigNode: { value: "", type: "connections-config-node", required: true },
+            groupEntityId: { value: "", required: true, default: "light.example" },
+            nightModeEntityId: { value: "", required: false, default: "input_boolean.example" },
+            entitiesOffAtNight: { value: "", required: false, default: "light.example1,light.example2" },
+            concentrateSettings: { value: "", required: true, default: "concentrate 100" },
+            readSettings: { value: "", required: true, default: "read 100" },
+            relaxSettings: { value: "", required: true, default: "relax 100" },
+            restSettings: { value: "", required: true, default: "rest 100" },
+            nightLightSettings: { value: "", required: true, default: "nightLight 100" },
+            nightSettings: { value: "", required: true, default: "nightLight 30" },
+        },
+        label: function () {
+            return this.name || "Light Control Config"
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="light-control-config-node">
+    <div class="form-row">
+        <h2>Basic configuration</h2>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-connectionsConfigNode">Config</label>
+        <input type="text" id="node-config-input-connectionsConfigNode" />
+    </div>
+    <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-groupEntityId">Group Entity ID</label>
+        <p>The entity ID of the light group to control.</p>
+        <input type="text" id="node-config-input-groupEntityId" />
+    </div>
+    <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-nightModeEntityId">Night Mode Entity ID</label>
+        <p>The entity ID of the input_boolean that controls night mode. Empty to disable</p>
+        <input type="text" id="node-config-input-nightModeEntityId" />
+    </div>  
+    <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-entitiesOffAtNight">Entities Off At Night</label>
+        <p>Comma-separated list of entities to turn off during night mode. Empty to disable</p>
+        <input type="text" id="node-config-input-entitiesOffAtNight" />
+    </div>
+    <div class="form-row">
+        <hr>
+        <h2>Scene definitions</h2>
+        <p>
+            The following settings define what the scenes should do. They follow the syntax of [scene] [brightnessPercent] 
+            where scene is the scene name, if the same as below values will use the 
+            <a style="font-weight: bold;" href="https://github.com/basnijholt/adaptive-lighting">Adaptive Lighting HACS plugin</a>
+            otherwise will send to scene.apply. The brightnessPercent is the brightness percentage to set
+        </p>
+        <ul>
+            <li>rest</li>
+            <li>relax</li>
+            <li>concentrate</li>
+            <li>energize</li>
+            <li>coolBright</li>
+            <li>bright</li>
+            <li>dimmed</li>
+            <li>nightLight</li>
+            <li>sleepy</li>
+            <li>paintedSky</li>
+            <li>rollingHills</li>
+            <li>sailingAway</li>
+            <li>sunFlare</li>
+        </ul>
+    </div>
+
+    <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-concentrateSettings">Concentrate Settings</label>
+        <p>The scene to use for the concentrate scene [scene] [brightnessPercent]</p>
+        <input type="text" id="node-config-input-concentrateSettings" />
+    </div>
+    <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-readSettings">Read Settings</label>
+        <p>The scene to use for the read scene [scene] [brightnessPercent]</p>
+        <input type="text" id="node-config-input-readSettings" />
+    </div>
+    <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-relaxSettings">Relax Settings</label>
+        <p>The scene to use for the relax scene [scene] [brightnessPercent]</p>
+        <input type="text" id="node-config-input-relaxSettings" />
+    </div>
+    <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-restSettings">Rest Settings</label>
+        <p>The scene to use for the rest scene [scene] [brightnessPercent]</p>
+        <input type="text" id="node-config-input-restSettings" />
+    </div>
+    <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-nightLightSettings">Night Light Settings</label>
+        <p>The scene to use for the night light scene [scene] [brightnessPercent]</p>
+        <input type="text" id="node-config-input-nightLightSettings" />
+    </div>
+        <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-nightSettings">Night Settings</label>
+        <p>The scene to use for the night light scene [scene] [brightnessPercent]</p>
+        <input type="text" id="node-config-input-nightSettings" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="light-control-config-node">
+</script>

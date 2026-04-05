@@ -19,7 +19,8 @@
     "nodes": {
       "ConnectionsConfigNode": "dist/Connections/connectionsConfigNode.js",
       "ConnectionsNode": "dist/Connections/connectionsNode.js",
-      "LightControlConfig": "nodes/LightControl/config.js"
+      "LightControlConfigNode": "dist/LightControl/lightControlConfigNode.js",
+      "LightControlNode": "dist/LightControl/lightControlNode.js"
     }
   }
 }
