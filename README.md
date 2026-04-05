@@ -541,4 +541,15 @@ A node that provides control of a cover
 * Have curtain be closed at certain hours
 * Have curtain be half at certain hours
 
+## EV Charging Price
+
+A node that keeps track of how much i spend on charging my EV (polestar 2) while at home.
+
+It works by checking if the car started charging while i'm at home. When the car stops charging it will add the price of the session to a sensor.
+This just estimates the value, useful for if you don't have the ability to monitor the charge rate etc.
+
+### Features
+* Calculates how much money per month i spend on charging my EV
+* Detects if the car was charged at home, ignoring fast charging sessions
+
 // MIMO //

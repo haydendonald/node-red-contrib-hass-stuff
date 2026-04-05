@@ -1,0 +1,79 @@
+<script type="text/javascript" id="node-ev-charging-price-node">
+    RED.nodes.registerType("ev-charging-price-node", {
+        category: "HASS Stuff",
+        color: "#ffcc00",
+        inputs: 0,
+        outputs: 0,
+        icon: "debug.svg",
+        paletteLabel: "EV Charging Price",
+        defaults: {
+            name: { value: "" },
+            connectionsConfigNode: { value: '', type: "connections-config-node", required: true },
+            chargeRate: { value: 0.0, required: true, validate: RED.validators.number() },
+            peakRate: { value: 0.0, required: true, validate: RED.validators.number() },
+            offPeakRate: { value: 0.0, required: true, validate: RED.validators.number() },
+            peakRateHours: { value: "7,8,9,10,11,12,13,14,15,16,17,18,19", required: true },
+            peakRateDays: { value: "0,1,2,3,4", required: true },
+            chargingEntityId: { value: "", required: true },
+            homeEntityId: { value: "", required: true },
+            notificationId: { value: "", required: false }
+        },
+        label: function () {
+            return this.name || "EV Charging Price"
+        }
+    });
+</script>
+
+
+<script type="text/html" data-template-name="ev-charging-price-node">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connectionsConfigNode">Config</label>
+        <input type="text" id="node-input-connectionsConfigNode" />
+    </div>
+    <div class="form-row">
+        <p>The charge rate in KW</p>
+        <label for="node-input-chargeRate">Charge Rate</label>
+        <input type="number" step="0.01" id="node-input-chargeRate" />
+    </div>
+    <div class="form-row">
+        <p>The cost of charging during the peak hours in $/kWh</p>
+        <label for="node-input-peakRate">Peak Rate</label>
+        <input type="number" step="0.01" id="node-input-peakRate" />
+    </div>
+    <div class="form-row">
+        <p>The cost of charging during the off-peak hours in $/kWh</p>
+        <label for="node-input-offPeakRate">Off-Peak Rate</label>
+        <input type="number" step="0.01" id="node-input-offPeakRate" />
+    </div>
+    <div class="form-row">
+        <p>The hours during which the peak rate applies. For example 7,8,9,10,11,12,13,14,15,16,17,18,19</p>
+        <label for="node-input-peakRateHours">Peak Rate Hours</label>
+        <input type="text" id="node-input-peakRateHours" />
+    </div>
+    <div class="form-row">
+        <p>The days during which the peak rate applies. For example 0,1,2,3,4 for Monday to Friday</p>
+        <label for="node-input-peakRateDays">Peak Rate Days</label>
+        <input type="text" id="node-input-peakRateDays" />
+    </div>
+    <div class="form-row">
+        <p>The entity ID for the charging sensor for example sensor.polestar2_charging_state</p>
+        <label for="node-input-chargingEntityId">Charging Entity ID</label>
+        <input type="text" id="node-input-chargingEntityId" />
+    </div>
+    <div class="form-row">
+        <p>The entity ID for the home presence sensor for example person.hayden</p>
+        <label for="node-input-homeEntityId">Home Entity ID</label>
+        <input type="text" id="node-input-homeEntityId" />
+    </div>
+    <div class="form-row">
+        <p>The entity IDs for the notification target for example notify.mobile_app_haydens_iphone</p>
+        <label for="node-input-notificationId">Notification ID</label>
+        <input type="text" id="node-input-notificationId" />
+    </div>
+</script>
+<script type="text/html" data-help-name="ev-charging-price-node">
+</script>
