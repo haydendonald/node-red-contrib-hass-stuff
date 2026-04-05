@@ -8,7 +8,7 @@
     "typescript": "^4.9.5"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "rm -rf dist && cp -r nodes dist && find dist -name '*.ts' -delete && tsc"
   },
   "keywords": [
     "node-red"
