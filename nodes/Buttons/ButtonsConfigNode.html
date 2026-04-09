@@ -1,0 +1,48 @@
+<script type="text/javascript" id="node-buttons-config-node">
+    RED.nodes.registerType("buttons-config-node", {
+        category: "config",
+        defaults: {
+            name: { value: "", required: true },
+            connectionsConfigNode: { value: "", type: "connections-config-node", required: true },
+            entityId: { value: "", required: true },
+            type: { value: "", required: true }
+        },
+        label: function () {
+            return this.name || "Buttons Config"
+        },
+        oneditprepare: function () {
+            $("#node-config-input-type").typedInput({
+                types: [
+                    {
+                        value: "type",
+                        options: [
+                            { value: "Ikea", label: "Ikea" }
+                        ]
+                    }
+                ]
+            });
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="buttons-config-node">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-connectionsConfigNode">Config</label>
+        <input type="text" id="node-config-input-connectionsConfigNode" />
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-entityId">Entity ID</label>
+        <input type="text" id="node-config-input-entityId" />
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-type">Type</label>
+        <input type="text" id="node-config-input-type">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="buttons-config-node">
+</script>
