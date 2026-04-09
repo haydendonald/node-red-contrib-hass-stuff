@@ -1,6 +1,6 @@
 {
   "name": "@haydendonald/node-red-contrib-hass-stuff",
-  "version": "1.1.7",
+  "version": "1.2.0",
   "description": "A collection of stuff I use on my Node Red + Home Assistant server. This could be of use for others, i don't know..",
   "devDependencies": {
     "@types/node": "^18.14.0",
