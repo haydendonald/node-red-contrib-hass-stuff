@@ -162,6 +162,14 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                         transition: serviceData.transition || 1
                     });
                     lastSentScene = "off";
+
+                    //Send to the node output
+                    self.sendMsg({
+                        topic: "lightsOff",
+                        payload: {
+                            transitionSec: serviceData.transition || 1
+                        }
+                    });
                 }
             });
 
