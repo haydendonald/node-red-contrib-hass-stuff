@@ -507,7 +507,7 @@ A node that controls lights with general scenes that adjust throughout the day w
 * Ability to turn off entities in night mode
 
 ### Dependencies
-1. [Adaptive Lighting](https://github.com/basnijholt/adaptive-lighting)
+1. [Hue Scene Presets](https://github.com/Hypfer/hass-scene_presets)
 2. [HASS Sun](https://www.home-assistant.io/integrations/sun/)
 
 ## PIR
