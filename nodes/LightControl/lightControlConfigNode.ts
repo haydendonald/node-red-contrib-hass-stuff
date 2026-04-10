@@ -19,6 +19,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
         let nightModeState: string;
         let currentSceneState: string;
         let sunState: string;
+        let lastSentScene: string;
 
         let entitiesOnDuringNight: string[] = [];
         let entitiesOffDuringNight: string[] = [];
@@ -220,11 +221,17 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
         //When we get a message from a node on the NodeRED flows
         this.msgReceived = function (msg: NodeRED.NodeMessage, senderIds?: string[]) { }
 
-        const activateScene = (scene: Scene, transitionSec: number, turnLightsOn: boolean, entitiesOn?: string[], entitiesOff?: string[]) => {
+        const activateScene = (scene: Scene, transitionSec: number, turnLightsOn: boolean, entitiesOn?: string[], entitiesOff?: string[], forceSend?: boolean) => {
             //If the lights are off and we are not to turn the lights on don't do anything
             if (turnLightsOn == false && currentState.state == "off") {
                 return;
             }
+
+            //Don't send the same scene again
+            if (forceSend != true && scene.sceneName == lastSentScene) {
+                return;
+            }
+            lastSentScene = scene.sceneName;
 
             //Is not a scene preset scene if we have a entity id
             if (scene.sceneName.includes(".")) {
@@ -274,7 +281,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
             }
         }
 
-        const runAdaptive = (transitionSec: number, turnLightsOn: boolean) => {
+        const runAdaptive = (transitionSec: number, turnLightsOn: boolean, forceSend?: boolean) => {
             let entitiesOn;
             let entitiesOff;
 
@@ -319,12 +326,12 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
             }
 
             //Send it
-            activateScene(scene, transitionSec, turnLightsOn, entitiesOn, entitiesOff);
+            activateScene(scene, transitionSec, turnLightsOn, entitiesOn, entitiesOff, forceSend);
 
             //Start our interval to update the adaptive scene every minute
             clearTimeout(adaptiveInterval);
             adaptiveInterval = setTimeout(() => {
-                runAdaptive(300, false);
+                runAdaptive(300, false, true);
             }, 60000);
         }
     }
