@@ -161,6 +161,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                     connectionsConfigNode.sendHASSAction("light.turn_off", { entity_id: [config.groupEntityId] }, {
                         transition: serviceData.transition || 1
                     });
+                    lastSentScene = "off";
                 }
             });
 
