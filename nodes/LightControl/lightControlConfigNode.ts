@@ -332,7 +332,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
             clearTimeout(adaptiveInterval);
             adaptiveInterval = setTimeout(() => {
                 runAdaptive(300, false, true);
-            }, 60000);
+            }, 300000);
         }
     }
 
