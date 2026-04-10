@@ -2,7 +2,7 @@
     RED.nodes.registerType("light-control-node", {
         category: "HASS Stuff",
         color: "#ffcc00",
-        inputs: 1,
+        inputs: 0,
         outputs: 1,
         icon: "bulb.svg",
         paletteLabel: "Light Control",
@@ -28,4 +28,36 @@
     </div>
 </script>
 <script type="text/html" data-help-name="light-control-node">
+<p>A node that controls lights with general scenes that adjust throughout the day with sleep mode and other features.</p>
+
+<h2>Features</h2>
+<ul>
+    <li>Adaptive scenes depending on what time of the day it is</li>
+    <li>Adaptive scenes depending on luminance sensor</li>
+    <li>Night mode entity to force the adaptive scene to be in "night mode"</li>
+    <li>Ability to turn off entities in night mode</li>
+</ul>
+
+<h2>Dependencies</h2>
+<ul>
+    <li><a href="https://github.com/basnijholt/adaptive-lighting" target="_blank">Adaptive Lighting</a></li>
+    <li><a href="https://www.home-assistant.io/integrations/sun/" target="_blank">Sun Integration</a></li>
+</ul>
+
+<h2>Output</h2>
+<p>This node can output the following messages</p>
+<ul>
+    <li>Scene Sent - A scene has been sent to the lights</li>
+    <pre><code>
+        {
+            topic: "sceneSent",
+            payload: {
+                friendlyName: "Concentrate",
+                sceneName: "sunFlare",
+                brightnessPct: 100
+            }
+        }
+    </code></pre>
+</ul>
+
 </script>

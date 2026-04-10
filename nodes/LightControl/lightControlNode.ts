@@ -13,11 +13,6 @@ export = function LightControlNode(RED: NodeRED.NodeAPI) {
         lightControlConfigNode.addMsgCallback(this.id, (msg: any) => {
             this.send(msg);
         });
-
-        //When an input message is received
-        this.on("input", (msg: any, send, done) => {
-            lightControlConfigNode.msgReceived(msg, [this.id]);
-        });
     }
 
     RED.nodes.registerType("light-control-node", register);

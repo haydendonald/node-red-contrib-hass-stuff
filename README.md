@@ -502,7 +502,7 @@ A node that controls lights with general scenes that adjust throughout the day w
 
 ### Features
 * Adaptive scenes depending on what time of the day it is
-* Adaptive scenes depending on luminance sensor *TODO*
+* Adaptive scenes depending on luminance sensor
 * Night mode entity to force the adaptive scene to be in "night mode"
 * Ability to turn off entities in night mode
 

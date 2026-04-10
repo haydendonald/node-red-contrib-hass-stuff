@@ -241,14 +241,22 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 }, {
                     transition: transitionSec
                 });
+
+                //Send to the node output
+                self.sendMsg({
+                    topic: "sceneSent",
+                    payload: {
+                        scene,
+                        transitionSec
+                    }
+                });
             }
             //Is a scene preset
             else {
                 const sceneId = ScenePresets[scene.sceneName as keyof typeof ScenePresets] as string;
                 if (!sceneId) { self.error(`Scene preset not found for ${scene.sceneName}. Please use scene.<presetname> if this is not a scene i know about`); return; }
 
-                //Run via adaptive lights
-                connectionsConfigNode.sendHASSAction("scene_presets.apply_preset", undefined, {
+                const msg = {
                     brightness: (scene.brightnessPct / 100.0) * 255,
                     transition: transitionSec,
                     preset_id: sceneId,
@@ -257,7 +265,10 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                     targets: {
                         entity_id: entitiesOn ? entitiesOn : [config.groupEntityId]
                     }
-                }, undefined);
+                };
+
+                //Run via adaptive lights
+                connectionsConfigNode.sendHASSAction("scene_presets.apply_preset", undefined, msg, undefined);
 
                 //Run any lights off that need to be off
                 if (entitiesOff && entitiesOff.length > 0) {
@@ -267,6 +278,15 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                         transition: transitionSec
                     });
                 }
+
+                //Send to the node output
+                self.sendMsg({
+                    topic: "sceneSent",
+                    payload: {
+                        scene,
+                        transitionSec
+                    }
+                });
             }
         }
 
