@@ -85,6 +85,12 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
         RED.nodes.createNode(this, config);
         assignBaseConfigNode(this);
 
+        //When NodeRED redeploys
+        self.on("close", function (done: any) {
+            clearTimeout(adaptiveInterval);
+            done();
+        });
+
         const connectionsConfigNode = RED.nodes.getNode(config.connectionsConfigNode) as ConnectionsConfigNode;
 
         //When HASS is ready
