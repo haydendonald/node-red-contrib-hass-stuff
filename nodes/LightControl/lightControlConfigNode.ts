@@ -101,7 +101,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 groupEntities = data.data.attributes.entity_id;
                 currentState = data.data;
                 entitiesOffDuringNight = config.entitiesOffAtNight.split(",").filter((entity: string) => entity != "");
-                entitiesOnDuringNight = groupEntities.filter((entity: string) => !entitiesOffDuringNight.includes(entity));
+                entitiesOnDuringNight = entitiesOffDuringNight.length > 0 ? groupEntities.filter((entity: string) => !entitiesOffDuringNight.includes(entity)) : [config.groupEntityId];
             });
 
             //Get the state of the night mode switch and store it
@@ -288,7 +288,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                     shuffle: true,
                     smart_shuffle: true,
                     targets: {
-                        entity_id: entitiesOn ? entitiesOn : [config.groupEntityId]
+                        entity_id: (entitiesOn || []).length > 0 ? entitiesOn : [config.groupEntityId]
                     }
                 };
 
@@ -296,7 +296,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 connectionsConfigNode.sendHASSAction("scene_presets.apply_preset", undefined, msg, undefined);
 
                 //Run any lights off that need to be off
-                if (entitiesOff && entitiesOff.length > 0) {
+                if ((entitiesOff || []).length > 0) {
                     connectionsConfigNode.sendHASSAction("light.turn_off", {
                         entity_id: entitiesOff
                     }, {
