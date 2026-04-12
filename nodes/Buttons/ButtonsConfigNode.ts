@@ -12,12 +12,22 @@ export = function ButtonsConfigNode(RED: NodeRED.NodeAPI) {
 
         const connectionsConfigNode = RED.nodes.getNode(config.connectionsConfigNode) as ConnectionsConfigNode;
 
-        // let errored = false;
-        // if (!config.connectionsConfigNode || !connectionsConfigNode) { this.error("Connections Config Node is required"); errored = true; }
-        // if (!config.PIROccupancyEntity) { this.error("PIR occupancy entity is required"); errored = true; }
-        // if (!config.enabledByDefault) { this.error("Enabled by default is required"); errored = true; }
+        //Validate
+        let errored = false;
+        if (!config.connectionsConfigNode || !connectionsConfigNode) { this.error("Connections Config Node is required"); errored = true; }
+        if (!config.entityId) { this.error("Entity ID is required"); errored = true; }
+        if (!config.buttonType) { this.error("Button type is required"); errored = true; }
 
-        // if (errored) { return; }
+        if (errored) { return; }
+
+
+        connectionsConfigNode.hassEventStateChangeCallbacks[this.id] = function(entityId, newState, oldState) {
+            if (entityId === config.entityId) {
+                console.log(newState)
+            }
+        };
+
+
     }
 
     RED.nodes.registerType("buttons-config-node", register);

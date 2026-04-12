@@ -11,5 +11,7 @@ export interface ButtonsNode extends BaseNode { }
 //Config
 export interface ButtonsConfigNodeConfig extends NodeRED.NodeDef {
     connectionsConfigNode: string;
+    entityId: string;
+    buttonType: string;
 }
 export interface ButtonsConfigNode extends BaseConfigNode {}

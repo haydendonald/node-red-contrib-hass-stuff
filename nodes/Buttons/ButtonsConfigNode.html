@@ -5,16 +5,16 @@
             name: { value: "", required: true },
             connectionsConfigNode: { value: "", type: "connections-config-node", required: true },
             entityId: { value: "", required: true },
-            type: { value: "", required: true }
+            buttonType: { value: "", required: true }
         },
         label: function () {
             return this.name || "Buttons Config"
         },
         oneditprepare: function () {
-            $("#node-config-input-type").typedInput({
+            $("#node-config-input-buttonType").typedInput({
                 types: [
                     {
-                        value: "type",
+                        value: "buttonType",
                         options: [
                             { value: "Ikea", label: "Ikea" }
                         ]
@@ -39,8 +39,8 @@
         <input type="text" id="node-config-input-entityId" />
     </div>
     <div class="form-row">
-        <label for="node-config-input-type">Type</label>
-        <input type="text" id="node-config-input-type">
+        <label for="node-config-input-buttonType">Type</label>
+        <input type="text" id="node-config-input-buttonType">
     </div>
 </script>
 
