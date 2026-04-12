@@ -14,6 +14,8 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
 
         let detectedTimeout: NodeJS.Timeout;
         let notDetectedTimeout: NodeJS.Timeout;
+        
+        let sentOnState: boolean = false;
 
         RED.nodes.createNode(this, config);
         assignBaseConfigNode(this);
@@ -82,10 +84,10 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
             if (enabledState == "off") { return; }
 
             //Don't do anything if the luminance is not enough
-            if (config.minBrightnessLevel && parseInt(luminanceState.state) < parseInt(config.minBrightnessLevel)) { return; }
+            if (sentOnState == false && config.minBrightnessLevel && parseInt(luminanceState.state) < parseInt(config.minBrightnessLevel)) { return; }
 
             //Don't do anything if the luminance is too much
-            if (config.maxBrightnessLevel && parseInt(luminanceState.state) > parseInt(config.maxBrightnessLevel)) { return; }
+            if (sentOnState == false && config.maxBrightnessLevel && parseInt(luminanceState.state) > parseInt(config.maxBrightnessLevel)) { return; }
 
             const msg = {
                 payload: {
@@ -123,10 +125,12 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
         }
 
         function sendDetectedMsg(msg: any) {
+            sentOnState = true;
             self.sendMsg([msg]);
         }
 
         function sendNotDetectedMsg(msg: any) {
+            sentOnState = false;
             self.sendMsg([undefined, msg]);
         }
     }
