@@ -327,57 +327,64 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
         }
 
         const runAdaptive = (transitionSec: number, turnLightsOn: boolean, forceSend?: boolean) => {
-            let entitiesOn;
-            let entitiesOff;
+            function run(transitionSec: number, turnLightsOn: boolean, forceSend?: boolean) {
+                let entitiesOn;
+                let entitiesOff;
 
-            //Decide what scene to send
-            let scene: Scene = scenes["concentrate"];
-            if (nightModeState === "on") {
-                scene = scenes["night"];
-                entitiesOn = entitiesOnDuringNight;
-                entitiesOff = entitiesOffDuringNight;
-            }
-            else {
-                if (sunState == "above_horizon") {
-                    scene = scenes["concentrate"];
+                //Decide what scene to send
+                let scene: Scene = scenes["concentrate"];
+                if (nightModeState === "on") {
+                    scene = scenes["night"];
+                    entitiesOn = entitiesOnDuringNight;
+                    entitiesOff = entitiesOffDuringNight;
                 }
                 else {
-                    const currentHour = new Date().getHours();
-                    if (currentHour >= 23 || currentHour < 6) {
-                        scene = scenes["nightLight"];
-                    }
-                    else if (currentHour >= 6 && currentHour < 7) {
-                        scene = scenes["rest"];
-                    }
-                    else if (currentHour >= 7 && currentHour < 8) {
-                        scene = scenes["relax"];
-                    }
-                    else if (currentHour >= 8 && currentHour < 10) {
-                        scene = scenes["read"];
-                    }
-                    else if (currentHour >= 10 && currentHour < 15) {
+                    if (sunState == "above_horizon") {
                         scene = scenes["concentrate"];
                     }
-                    else if (currentHour >= 15 && currentHour < 19) {
-                        scene = scenes["read"];
-                    }
-                    else if (currentHour >= 19 && currentHour < 22) {
-                        scene = scenes["relax"];
-                    }
-                    else if (currentHour >= 22 && currentHour < 23) {
-                        scene = scenes["rest"];
+                    else {
+                        const currentHour = new Date().getHours();
+                        if (currentHour >= 23 || currentHour < 6) {
+                            scene = scenes["nightLight"];
+                        }
+                        else if (currentHour >= 6 && currentHour < 7) {
+                            scene = scenes["rest"];
+                        }
+                        else if (currentHour >= 7 && currentHour < 8) {
+                            scene = scenes["relax"];
+                        }
+                        else if (currentHour >= 8 && currentHour < 10) {
+                            scene = scenes["read"];
+                        }
+                        else if (currentHour >= 10 && currentHour < 15) {
+                            scene = scenes["concentrate"];
+                        }
+                        else if (currentHour >= 15 && currentHour < 19) {
+                            scene = scenes["read"];
+                        }
+                        else if (currentHour >= 19 && currentHour < 22) {
+                            scene = scenes["relax"];
+                        }
+                        else if (currentHour >= 22 && currentHour < 23) {
+                            scene = scenes["rest"];
+                        }
                     }
                 }
-            }
 
-            //Send it
-            activateScene(scene, transitionSec, turnLightsOn, entitiesOn, entitiesOff, forceSend);
+                //Send it
+                activateScene(scene, transitionSec, turnLightsOn, entitiesOn, entitiesOff, forceSend);
+            }
+            run(transitionSec, turnLightsOn, forceSend);
 
             //Start our interval to update the adaptive scene every minute
-            clearTimeout(adaptiveInterval);
-            adaptiveInterval = setTimeout(() => {
-                runAdaptive(300, false, true);
-            }, 300000);
+            const runAdaptiveInterval = () => {
+                clearTimeout(adaptiveInterval);
+                if (currentSceneState == "Adaptive") { run(300, false, true); }
+
+                //Reschedule
+                adaptiveInterval = setTimeout(runAdaptiveInterval, 1000);
+            }
+            runAdaptiveInterval();
         }
     }
 
