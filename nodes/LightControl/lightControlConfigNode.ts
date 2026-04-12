@@ -382,7 +382,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
                 if (currentSceneState == "Adaptive") { run(300, false, true); }
 
                 //Reschedule
-                adaptiveInterval = setTimeout(runAdaptiveInterval, 1000);
+                adaptiveInterval = setTimeout(runAdaptiveInterval, 300000);
             }
             runAdaptiveInterval();
         }
