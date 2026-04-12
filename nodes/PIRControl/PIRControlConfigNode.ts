@@ -18,6 +18,13 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
         RED.nodes.createNode(this, config);
         assignBaseConfigNode(this);
 
+        //When NodeRED redeploys
+        self.on("close", function (done: any) {
+            clearTimeout(detectedTimeout);
+            clearTimeout(notDetectedTimeout);
+            done();
+        });
+
         const connectionsConfigNode = RED.nodes.getNode(config.connectionsConfigNode) as ConnectionsConfigNode;
 
         let errored = false;
