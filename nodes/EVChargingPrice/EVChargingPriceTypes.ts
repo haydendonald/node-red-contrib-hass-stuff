@@ -3,6 +3,7 @@ import { BaseNode } from "../baseNode";
 
 export interface EVChargingPriceNodeConfig extends NodeRED.NodeDef {
     connectionsConfigNode: string;
+    priceEntityId: string;
     chargeRate: string;
     peakRate: string;
     offPeakRate: string;

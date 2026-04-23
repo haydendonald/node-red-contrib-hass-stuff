@@ -9,6 +9,7 @@
         defaults: {
             name: { value: "" },
             connectionsConfigNode: { value: '', type: "connections-config-node", required: true },
+            priceEntityId: { value: "", required: true },
             chargeRate: { value: 0.0, required: true, validate: RED.validators.number() },
             peakRate: { value: 0.0, required: true, validate: RED.validators.number() },
             offPeakRate: { value: 0.0, required: true, validate: RED.validators.number() },
@@ -33,6 +34,11 @@
     <div class="form-row">
         <label for="node-input-connectionsConfigNode">Config</label>
         <input type="text" id="node-input-connectionsConfigNode" />
+    </div>
+    <div class="form-row">
+        <p>The entity ID for the price for example input_number.ev_charging_price</p>
+        <label for="node-input-priceEntityId">Price Entity ID</label>
+        <input type="text" id="node-input-priceEntityId" />
     </div>
     <div class="form-row">
         <p>The charge rate in KW</p>

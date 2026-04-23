@@ -11,6 +11,7 @@ export = function EVChargingPriceNode(RED: NodeRED.NodeAPI) {
         //Validate the config
         let hasValidationError: boolean = false;
         if (!config.connectionsConfigNode) { self.error("Connections config node is required"); hasValidationError = true; }
+        if (!config.priceEntityId) { self.error("Price entity ID is required"); hasValidationError = true; }
         if (!config.chargingEntityId) { self.error("Charging entity ID is required"); hasValidationError = true; }
         if (!config.homeEntityId) { self.error("Home entity ID is required"); hasValidationError = true; }
         if (!config.chargeRate || parseFloat(config.chargeRate) <= 0) { self.error("Charge rate must be a positive number"); hasValidationError = true; }
@@ -27,8 +28,12 @@ export = function EVChargingPriceNode(RED: NodeRED.NodeAPI) {
         let startedChargingAt: any;
         let finishedChargingAt: any;
 
-        //Set the price sensor
-        let setPrice: (value: number) => void;
+        //Set the price value
+        function setPrice(value: number) {
+            connectionsConfigNode.sendHASSAction("input_number.set_value", {
+                entity_id: [config.priceEntityId]
+            }, { value });
+        }
 
         RED.nodes.createNode(this, config);
         assignBaseNode(this);
@@ -52,6 +57,9 @@ export = function EVChargingPriceNode(RED: NodeRED.NodeAPI) {
             // Get the current state of the home
             connectionsConfigNode.getHASSEntityState(config.homeEntityId, (payload, data) => { homeState = data.data.state; });
 
+            //Get the current state of the price
+            connectionsConfigNode.getHASSEntityState(config.priceEntityId, (payload, data) => { priceState = data.data.state; });
+
             //Add a boolean to keep track if the charger started while at home
             connectionsConfigNode.addHASSInputBoolean({
                 friendlyName: `${self.name} - Started Charging at Home`,
@@ -62,19 +70,6 @@ export = function EVChargingPriceNode(RED: NodeRED.NodeAPI) {
                 },
                 changedCallback: (state) => {
                     startedChargingAtHomeState = state;
-                }
-            });
-
-            //Add our sensor to track the cost
-            setPrice = connectionsConfigNode.addHASSSensor({
-                friendlyName: `${self.name} - Price`,
-                id: getEntityId("sensor", `${self.name}_price`),
-                defaultState: 0.0,
-                creationCallback: (state) => {
-                    priceState = state;
-                },
-                changedCallback: (state) => {
-                    priceState = state;
                 }
             });
 
@@ -108,6 +103,10 @@ export = function EVChargingPriceNode(RED: NodeRED.NodeAPI) {
                     }
 
                     handle();
+                    break;
+                }
+                case config.priceEntityId: {
+                    priceState = newState.state;
                     break;
                 }
             }
