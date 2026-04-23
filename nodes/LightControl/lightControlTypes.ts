@@ -206,6 +206,7 @@ export interface LightControlConfigNodeConfig extends NodeRED.NodeDef {
     groupEntityId: string;
     nightModeEntityId: string; //input_boolean If on will run the nights in night mode
     entitiesOffAtNight: string; //The entities to turn off during night mode separated by commas
+    continuousAdaptive: boolean; //If true, continuously send adaptive colours every 5 minutes
     concentrateSettings: string; //The scene to use for the concentrate scene [scene] [brightnessPercent]
     readSettings: string; //The scene to use for the read scene [scene] [brightnessPercent]
     relaxSettings: string; //The scene to use for the relax scene [scene] [brightnessPercent]

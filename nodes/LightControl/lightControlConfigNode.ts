@@ -379,7 +379,7 @@ export = function LightControlConfigNode(RED: NodeRED.NodeAPI) {
             //Start our interval to update the adaptive scene every minute
             const runAdaptiveInterval = () => {
                 clearTimeout(adaptiveInterval);
-                if (currentSceneState == "Adaptive") { run(300, false, true); }
+                if (currentSceneState == "Adaptive") { run(300, false, config.continuousAdaptive); }
 
                 //Reschedule
                 adaptiveInterval = setTimeout(runAdaptiveInterval, 300000);

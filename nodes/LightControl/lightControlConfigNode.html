@@ -7,6 +7,7 @@
             groupEntityId: { value: "", required: true, default: "light.example" },
             nightModeEntityId: { value: "", required: false, default: "input_boolean.example" },
             entitiesOffAtNight: { value: "", required: false, default: "light.example1,light.example2" },
+            continuousAdaptive: { value: true, required: false },
             concentrateSettings: { value: "", required: true, default: "concentrate 100" },
             readSettings: { value: "", required: true, default: "read 100" },
             relaxSettings: { value: "", required: true, default: "relax 100" },
@@ -46,6 +47,11 @@
         <label style="font-weight: bold;" for="node-config-input-entitiesOffAtNight">Entities Off At Night</label>
         <p>Comma-separated list of entities to turn off during night mode. Empty to disable</p>
         <input type="text" id="node-config-input-entitiesOffAtNight" />
+    </div>
+    <div class="form-row">
+        <label style="font-weight: bold;" for="node-config-input-continuousAdaptive">Continuously Send Adaptive Colours</label>
+        <p>If enabled, adaptive scenes will be resent every 5 minutes, if disabled will only send when a change is required</p>
+        <input type="checkbox" id="node-config-input-continuousAdaptive" style="display: inline-block; width: auto; vertical-align: top;">
     </div>
     <div class="form-row">
         <hr>
