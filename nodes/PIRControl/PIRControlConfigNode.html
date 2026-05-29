@@ -10,7 +10,8 @@
             maxBrightnessLevel: { value: "", required: false },
             turnOffAfterMs: { value: "0", default: "0", required: true },
             turnOnAfterMs: { value: "0", default: "0", required: true },
-            enabledByDefault: { value: true, default: true, required: true }
+            enabledByDefault: { value: true, default: true, required: true },
+            setDefaultOnRedeploy: { value: true, default: false, required: true }
         },
         label: function () {
             return this.name || "PIR Control Config"
@@ -61,6 +62,11 @@
         <p>The default state of the enabled boolean entity when it's added to Home Assistant</p>
         <label for="node-config-input-enabledByDefault">Enabled By Default</label>
         <input type="checkbox" id="node-config-input-enabledByDefault" />
+    </div>
+    <div class="form-row">
+        <p>When NodeRed redeploys always set the default state above, if disabled will just retain the current state in Home Assistant</p>
+        <label for="node-config-input-setDefaultOnRedeploy">Set Default On Redeploy</label>
+        <input type="checkbox" id="node-config-input-setDefaultOnRedeploy" />
     </div>
 </script>
 

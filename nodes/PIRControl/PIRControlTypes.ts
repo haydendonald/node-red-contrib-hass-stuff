@@ -17,6 +17,7 @@ export interface PIRControlConfigNodeConfig extends NodeRED.NodeDef {
     maxBrightnessLevel: string;
     turnOffAfterMs: string;
     turnOnAfterMs: string;
-    enabledByDefault: string;
+    enabledByDefault: boolean;
+    setDefaultOnRedeploy: boolean;
 }
 export interface PIRControlConfigNode extends BaseConfigNode {}
