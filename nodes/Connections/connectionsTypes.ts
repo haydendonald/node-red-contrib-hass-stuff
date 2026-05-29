@@ -51,27 +51,37 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
      */
     addHASSEntity: (entityId: string, data: any, callback?: (response: NodeRED.NodeMessage) => void) => void;
 
+    /**
+     * Add a new HASS input boolean entity
+     * @param options.friendlyName The friendly name of the input boolean
+     * @param options.id The ID of the input boolean
+     * @param options.defaultState The default state of the input boolean
+     * @param options.forceDefaultStateOnCreation Whether to force the default state on creation
+     * @param options.creationCallback Callback function when the input boolean is created
+     * @param options.changedCallback Callback function when the input boolean state changes
+     */
     addHASSInputBoolean: (options: {
         friendlyName: string,
         id?: string,
         defaultState?: string,
+        forceDefaultStateOnCreation?: boolean,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
         changedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
     }) => void;
 
     /**
- * Add a button entity to HASS
- * @param options.friendlyName The friendly name of the button
- * @param options.id The id of the button button.[id]. If not set will be friendly_name
- * @param options.state The default state of the button. Default is "unknown"
- * @param options.defaultState The default state of the button. Default is "unknown"
- * @param options.creationCallback The callback for when a response comes back in
- */
+     * Add a button entity to HASS
+     * @param options.friendlyName The friendly name of the button
+     * @param options.id The id of the button button.[id]. If not set will be friendly_name
+     * @param options.defaultState The default state of the button. Default is "unknown"
+     * @param options.forceDefaultStateOnCreation Whether to force the default state on creation
+     * @param options.creationCallback The callback for when a response comes back in
+     */
     addHASSButton: (options: {
         friendlyName: string,
         id?: string,
-        state?: string,
         defaultState?: any,
+        forceDefaultStateOnCreation?: boolean,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
         pressedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
     }) => void;
@@ -81,16 +91,16 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
      * Add a scene entity to HASS
      * @param options.friendlyName The friendly name of the scene
      * @param options.id The id of the scene scene.[id]. If not set will be friendly_name
-     * @param options.state The default state of the scene. Default is "unknown"
      * @param options.defaultState The default state of the scene. Default is "unknown"
+     * @param options.forceDefaultStateOnCreation Whether to force the default state on creation
      * @param options.creationCallback The callback for when a response comes back in
      * @param options.pressedCallback The callback for when the scene is activated
      */
     addHASSScene: (options: {
         friendlyName: string,
         id?: string,
-        state?: string,
         defaultState?: any,
+        forceDefaultStateOnCreation?: boolean,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
         activatedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
     }) => void;
@@ -99,16 +109,16 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
      * Add a select entity to HASS
      * @param options.friendlyName The friendly name of the select
      * @param options.id The id of the select select.[id]. If not set will be friendly_name
-     * @param options.state The default state of the select. Default is "unknown"
      * @param options.defaultState The default state of the select. Default is "unknown"
+     * @param options.forceDefaultStateOnCreation Whether to force the default state on creation
      * @param options.creationCallback The callback for when a response comes back in
      * @param options.activatedCallback The callback for when the select is activated
      */
     addHASSSelect: (options: {
         friendlyName: string,
         id?: string,
-        state?: string,
         defaultState?: any,
+        forceDefaultStateOnCreation?: boolean,
         options: string[],
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
         activatedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
@@ -118,16 +128,16 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
     * Add a sensor entity to HASS
     * @param options.friendlyName The friendly name of the sensor
     * @param options.id The id of the sensor sensor.[id]. If not set will be friendly_name
-    * @param options.state The default state of the sensor. Default is "unknown"
     * @param options.defaultState The default state of the sensor. Default is "unknown"
+    * @param options.forceDefaultStateOnCreation Whether to force the default state on creation
     * @param options.creationCallback The callback for when a response comes back in
     * @returns Function to set the sensor value
     */
     addHASSSensor: (options: {
         friendlyName: string,
         id?: string,
-        state?: any,
         defaultState?: any,
+        forceDefaultStateOnCreation?: boolean,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
         changedCallback?: (state: any, response: NodeRED.NodeMessage) => void
     }) => (state: any) => void;

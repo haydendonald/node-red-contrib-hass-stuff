@@ -129,12 +129,12 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
         self.addHASSInputBoolean = function (options: {
             friendlyName: string,
             id?: string,
-            state?: string,
             defaultState?: string,
+            forceDefaultStateOnCreation?: boolean,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             changedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
         }) {
-            let currentState: string = options.state || options.state || options.defaultState || "unknown";
+            let currentState: string = options.defaultState || "unknown";
 
             const entityId = options.id ? options.id : getEntityId("input_boolean", options.friendlyName);
             const data = (state: any) => {
@@ -152,14 +152,22 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             };
 
             //Add the input boolean to HASS
-            self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
-                if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
-
-                const previousState = entities.length == 1 ? entities[0].state : undefined;
-                self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
+            const addEntity = (state: any) => {
+                self.addHASSEntity(entityId, data(state), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
-            });
+            }
+
+            if (options.forceDefaultStateOnCreation == true) {
+                addEntity(options.defaultState);
+            }
+            else {
+                self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
+                    if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
+                    addEntity(entities.length == 1 ? entities[0].state : undefined);
+                });
+            }
+
             //Assign the changed callback if set
             if (options.changedCallback) {
                 self.hassEventCallServiceCallbacks[entityId] = function (domain: string, service: string, serviceData: any) {
@@ -189,8 +197,8 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
         self.addHASSButton = function (options: {
             friendlyName: string,
             id?: string,
-            state?: string,
             defaultState?: string,
+            forceDefaultStateOnCreation?: boolean,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             pressedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
         }) {
@@ -210,14 +218,21 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             };
 
             //Add the button to HASS
-            self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
-                if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
-
-                const previousState = entities.length == 1 ? entities[0].state : undefined;
-                self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
+            const addEntity = (state: any) => {
+                self.addHASSEntity(entityId, data(state), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
-            });
+            }
+
+            if (options.forceDefaultStateOnCreation == true) {
+                addEntity(options.defaultState);
+            }
+            else {
+                self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
+                    if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
+                    addEntity(entities.length == 1 ? entities[0].state : undefined);
+                });
+            }
 
             //Assign the pressed callback if set
             if (options.pressedCallback) {
@@ -238,8 +253,8 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
         self.addHASSScene = function (options: {
             friendlyName: string,
             id?: string,
-            state?: string,
             defaultState?: string,
+            forceDefaultStateOnCreation?: boolean,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             activatedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
         }) {
@@ -259,14 +274,21 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             };
 
             //Add the scene to HASS
-            self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
-                if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
-
-                const previousState = entities.length == 1 ? entities[0].state : undefined;
-                self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
+            const addEntity = (state: any) => {
+                self.addHASSEntity(entityId, data(state), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
-            });
+            }
+
+            if (options.forceDefaultStateOnCreation == true) {
+                addEntity(options.defaultState);
+            }
+            else {
+                self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
+                    if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
+                    addEntity(entities.length == 1 ? entities[0].state : undefined);
+                });
+            }
 
             //Assign the activated callback if set
             if (options.activatedCallback) {
@@ -289,8 +311,8 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
         self.addHASSSelect = function (options: {
             friendlyName: string,
             id?: string,
-            state?: string,
             defaultState?: string,
+            forceDefaultStateOnCreation?: boolean,
             options: string[],
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             activatedCallback?: (state: any, serviceData: any, response: NodeRED.NodeMessage) => void
@@ -312,14 +334,21 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             };
 
             //Add the select to HASS
-            self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
-                if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
-
-                const previousState = entities.length == 1 ? entities[0].state : undefined;
-                self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
+            const addEntity = (state: any) => {
+                self.addHASSEntity(entityId, data(state), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
-            });
+            }
+
+            if (options.forceDefaultStateOnCreation == true) {
+                addEntity(options.defaultState);
+            }
+            else {
+                self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
+                    if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
+                    addEntity(entities.length == 1 ? entities[0].state : undefined);
+                });
+            }
 
             //Assign the activated callback if set
             if (options.activatedCallback) {
@@ -371,8 +400,8 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
         self.addHASSSensor = function (options: {
             friendlyName: string,
             id?: string,
-            state?: any,
             defaultState?: any,
+            forceDefaultStateOnCreation?: boolean,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             changedCallback?: (state: any, response: NodeRED.NodeMessage) => void
         }) {
@@ -392,15 +421,22 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             };
 
             //Add the button to HASS
-            self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
-                if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
-
-                const previousState = entities.length == 1 ? entities[0].state : undefined;
-                self.addHASSEntity(entityId, data(options.state || previousState), options.creationCallback ? (response: any) => {
+            const addEntity = (state: any) => {
+                self.addHASSEntity(entityId, data(state), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
-            });
+            }
 
+            if (options.forceDefaultStateOnCreation == true) {
+                addEntity(options.defaultState);
+            }
+            else {
+                self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
+                    if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
+                    addEntity(entities.length == 1 ? entities[0].state : undefined);
+                });
+            }
+            
             return (state: any) => {
                 self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
                     options.changedCallback?.(state, response);
