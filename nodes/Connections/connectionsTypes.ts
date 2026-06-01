@@ -219,6 +219,17 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
     }, callback?: (data: any) => void) => void;
 
     /**
+     * Get the last state of an entity in HASS from history
+     * @param options.entityId The entity id
+     * @param options.maxWeeksAgo The maximum number of weeks ago to look for the last state. Default is 1 year
+     * @param callback The callback containing the state
+     */
+    findHASSLastState: (options: {
+        entityId: string,
+        maxWeeksAgo?: number
+    }, callback?: (state: any) => void) => void;
+
+    /**
      * Send notification to a companion app
      * @param options The options for the notification
      * @param options.entityIds The entity IDs to send the notification to for example notify.mobile_app_haydens_iphone

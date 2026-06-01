@@ -149,6 +149,40 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             }
         }
 
+        self.findHASSLastState = function (options: {
+            entityId: string,
+            maxWeeksAgo?: number
+        }, callback?: (state: any) => void) {
+            new Promise<void>(async (resolve) => {
+                for (let week = 1; week <= (options.maxWeeksAgo || 52); week++) {
+                    //Set our date frame to look in, 1 week
+                    const startDate = new Date();
+                    startDate.setDate(startDate.getDate() - (7 * week));
+                    const endDate = new Date();
+                    endDate.setDate(endDate.getDate() - (7 * (week - 1)));
+
+                    const result: any[] = await new Promise((resolve) => {
+                        self.getHASSEntityHistory({
+                            entityId: options.entityId,
+                            startDate: startDate.toISOString(),
+                            endDate: endDate.toISOString()
+                        }, (data) => {
+                            resolve(data.payload);
+                        });
+                    });
+
+                    if (result && result.length > 0) {
+                        callback?.(result[result.length - 1]);
+                        resolve();
+                        return;
+                    }
+
+                    callback?.([]);
+                    resolve();
+                }
+            });
+        }
+
         self.addHASSEntity = function (entityId: string, data: any, callback?: (response: NodeRED.NodeMessage) => void) {
             self.sendHASSAPI("http", "post", "/api/states/" + entityId, callback, undefined, data);
         }
