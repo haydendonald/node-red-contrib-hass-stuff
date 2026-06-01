@@ -492,12 +492,14 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
                 addEntity(options.defaultState);
             }
             else {
-                self.getHASSEntities([{ property: "entity_id", logic: "is", value: entityId }], (entities) => {
-                    if (entities.length > 1) { self.error(`Found more than 1 entity for ${entityId}`); return; }
-                    addEntity(entities.length == 1 ? entities[0].state : undefined);
+                //Search for the last state and create us with that state if we find it, otherwise create it with the default state
+                self.findHASSLastState({
+                    entityId,
+                }, (data) => {
+                    addEntity(data && data.state ? data.state : undefined);
                 });
             }
-            
+
             return (state: any) => {
                 self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
                     options.changedCallback?.(state, response);
