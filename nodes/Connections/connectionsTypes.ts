@@ -7,7 +7,8 @@ export enum Topics {
     EVENT = "event",
     STATE = "state",
     ACTION = "action",
-    GET_ENTITIES = "get_entities"
+    GET_ENTITIES = "get_entities",
+    HISTORY = "history"
 }
 
 export interface ConnectionsNodeConfig extends NodeRED.NodeDef {
@@ -28,6 +29,7 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
     }, data: any) => void)>;
     hassCurrentStateCallbacks: Record<string, (payload: any, data: any) => void>;
     hassGetEntitiesCallbacks: Record<string, (entities: any[]) => void>;
+    hassGetEntityHistoryCallbacks: Record<string, (data: any) => void>;
 
     hassEventReadyCallbacks: Record<string, (msg: NodeRED.NodeMessage) => void>;
     hassEventCallbacks: Record<string, (msg: NodeRED.NodeMessage) => void>;
@@ -200,6 +202,21 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
             outputResultsCount?: number
         }
     ], callback?: (entities: any[]) => void) => void;
+
+    /**
+     * Get the history of an entity in HASS
+     * @param options.entityId The entity id
+     * @param options.relativeTime The relative time to get the history for. See HASS docs
+     * @param options.startDate The start date to get the history from in ISO format
+     * @param options.endDate The end date to get the history to in ISO format
+     * @param callback The callback containing the history
+     */
+    getHASSEntityHistory: (options: {
+        entityId: string,
+        relativeTime?: string,
+        startDate?: string,
+        endDate?: string
+    }, callback?: (data: any) => void) => void;
 
     /**
      * Send notification to a companion app

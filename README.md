@@ -19,7 +19,7 @@ The following can be imported into NodeRED to provide these:
         "name": "",
         "server": "",
         "version": 1,
-        "debugenabled": true,
+        "debugenabled": false,
         "protocol": "websocket",
         "method": "get",
         "path": "",
@@ -77,7 +77,7 @@ The following can be imported into NodeRED to provide these:
         "name": "",
         "server": "",
         "version": 7,
-        "debugenabled": false,
+        "debugenabled": true,
         "action": "",
         "floorId": [],
         "areaId": [],
@@ -448,6 +448,85 @@ The following can be imported into NodeRED to provide these:
         "wires": []
     },
     {
+        "id": "6086e95b2ec5ab4a",
+        "type": "api-get-history",
+        "z": "f028d32cd5f8196d",
+        "name": "",
+        "server": "",
+        "version": 1,
+        "startDate": "",
+        "endDate": "",
+        "entityId": "",
+        "entityIdType": "equals",
+        "useRelativeTime": false,
+        "relativeTime": "",
+        "flatten": true,
+        "outputType": "array",
+        "outputLocationType": "msg",
+        "outputLocation": "payload",
+        "x": 550,
+        "y": 860,
+        "wires": [
+            [
+                "6f879565f9b0ef87"
+            ]
+        ]
+    },
+    {
+        "id": "7b0e023ac9792650",
+        "type": "switch",
+        "z": "f028d32cd5f8196d",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "history",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 445,
+        "y": 860,
+        "wires": [
+            [
+                "6086e95b2ec5ab4a"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "6f879565f9b0ef87",
+        "type": "change",
+        "z": "f028d32cd5f8196d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "history",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 675,
+        "y": 860,
+        "wires": [
+            [
+                "78f07ee4763a6b14"
+            ]
+        ],
+        "l": false
+    },
+    {
         "id": "f6240b1dab1143e3",
         "type": "junction",
         "z": "f028d32cd5f8196d",
@@ -458,7 +537,8 @@ The following can be imported into NodeRED to provide these:
                 "6b0c6c859f8180ff",
                 "e335241f272835a4",
                 "cb6a81f143b93c08",
-                "a3de07378d809f30"
+                "a3de07378d809f30",
+                "7b0e023ac9792650"
             ]
         ]
     },
@@ -480,12 +560,12 @@ The following can be imported into NodeRED to provide these:
         "name": "HASS Stuff Connections Config"
     },
     {
-        "id": "f947b66dc55502ce",
+        "id": "76a3b64da68e68c9",
         "type": "global-config",
         "env": [],
         "modules": {
             "node-red-contrib-home-assistant-websocket": "0.80.3",
-            "node-red-contrib-hass-stuff": "0.0.1"
+            "@haydendonald/node-red-contrib-hass-stuff": "1.6.0"
         }
     }
 ]

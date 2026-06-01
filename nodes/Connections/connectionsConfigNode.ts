@@ -14,6 +14,7 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
         self.hassActionCallbacks = {};
         self.hassCurrentStateCallbacks = {};
         self.hassGetEntitiesCallbacks = {};
+        self.hassGetEntityHistoryCallbacks = {};
 
         self.hassEventReadyCallbacks = {};
         self.hassEventCallbacks = {};
@@ -119,6 +120,32 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             //Add our callback for when a response comes back in
             if (callback) {
                 self.hassGetEntitiesCallbacks[callbackId] = callback;
+            }
+        }
+
+        self.getHASSEntityHistory = function (options: {
+            entityId: string,
+            relativeTime?: string,
+            startDate?: string,
+            endDate?: string
+        }, callback?: (data: any) => void) {
+            const callbackId = generateRandomId(Object.keys(self.hassGetEntityHistoryCallbacks));
+
+            const msg: ConnectionsMsg = {
+                topic: Topics.HISTORY,
+                callbackId,
+                payload: {
+                    entityId: options.entityId,
+                    relativeTime: options.relativeTime,
+                    startDate: options.startDate,
+                    endDate: options.endDate
+                }
+            }
+            self.sendMsg(msg);
+
+            //Add our callback for when a response comes back in
+            if (callback) {
+                self.hassGetEntityHistoryCallbacks[callbackId] = callback;
             }
         }
 
@@ -516,6 +543,10 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
                 }
                 case Topics.GET_ENTITIES: {
                     self.handleCallback(self.hassGetEntitiesCallbacks, msg.callbackId, payload);
+                    break;
+                }
+                case Topics.HISTORY: {
+                    self.handleCallback(self.hassGetEntityHistoryCallbacks, msg.callbackId, msg);
                     break;
                 }
             }
