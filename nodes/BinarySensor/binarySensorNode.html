@@ -1,0 +1,32 @@
+<script type="text/javascript" id="node-binary-sensor-node">
+    RED.nodes.registerType("binary-sensor-node", {
+        category: "HASS Stuff",
+        color: "#ffcc00",
+        inputs: 0,
+        outputs: 2,
+        outputLabels: ["triggered", "de-triggered"],
+        icon: "alert.svg",
+        paletteLabel: "Binary Sensor",
+        defaults: {
+            name: { value: "" },
+            binarySensorConfigNode: { value: '', type: "binary-sensor-config-node", required: true }
+        },
+        label: function () {
+            return this.name || "Binary Sensor"
+        }
+    });
+</script>
+
+
+<script type="text/html" data-template-name="binary-sensor-node">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-binarySensorConfigNode">Config</label>
+        <input type="text" id="node-input-binarySensorConfigNode" />
+    </div>
+</script>
+<script type="text/html" data-help-name="binary-sensor-node">
+</script>

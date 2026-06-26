@@ -1,14 +1,14 @@
 import * as NodeRED from "node-red";
 import { assignBaseConfigNode } from "../baseConfigNode";
-import { PIRControlConfigNode, PIRControlConfigNodeConfig } from "./PIRControlTypes";
+import { BinarySensorConfigNode, BinarySensorConfigNodeConfig } from "./binarySensorTypes";
 import { ConnectionsConfigNode } from "../Connections/connectionsTypes";
 import { getEntityId } from "../utility";
 
-export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
-    const register = function (this: PIRControlConfigNode, config: PIRControlConfigNodeConfig) {
+export = function BinarySensorConfigNode(RED: NodeRED.NodeAPI) {
+    const register = function (this: BinarySensorConfigNode, config: BinarySensorConfigNodeConfig) {
         const self = this;
 
-        let PIROccupancyState: any;
+        let binarySensorState: any;
         let luminanceState: any;
         let enabledState: string;
 
@@ -31,7 +31,7 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
 
         let errored = false;
         if (!config.connectionsConfigNode || !connectionsConfigNode) { this.error("Connections Config Node is required"); errored = true; }
-        if (!config.PIROccupancyEntity) { this.error("PIR occupancy entity is required"); errored = true; }
+        if (!config.binarySensorEntity) { this.error("Binary sensor entity is required"); errored = true; }
         if (config.enabledByDefault === undefined) { this.error("Enabled by default is required"); errored = true; }
         if (config.setDefaultOnRedeploy === undefined) { this.error("Set default on redeploy is required"); errored = true; }
 
@@ -39,9 +39,9 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
 
         //When HASS is ready
         connectionsConfigNode.hassEventReadyCallbacks[this.id] = function (msg: NodeRED.NodeMessage) {
-            //Get the current state of the occupancy sensor
-            connectionsConfigNode.getHASSEntityState(config.PIROccupancyEntity, (payload, data) => {
-                PIROccupancyState = data.data;
+            //Get the current state of the binary sensor
+            connectionsConfigNode.getHASSEntityState(config.binarySensorEntity, (payload, data) => {
+                binarySensorState = data.data;
             });
 
             //If there is a luminance entity get it's state
@@ -69,8 +69,8 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
         //When a state change happens in home assistant
         connectionsConfigNode.hassEventStateChangeCallbacks[this.id] = function (entityId: string, oldState: any, newState: any) {
             switch (entityId) {
-                case config.PIROccupancyEntity: {
-                    PIROccupancyState = newState;
+                case config.binarySensorEntity: {
+                    binarySensorState = newState;
                     handle();
                     break;
                 }
@@ -82,7 +82,7 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
         }
 
         function handle() {
-            //Don't do anything if the PIR is disabled
+            //Don't do anything if the sensor is disabled
             if (enabledState == "off") { return; }
 
             //Don't do anything if the luminance is not enough
@@ -93,14 +93,14 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
 
             const msg = {
                 payload: {
-                    PIROccupancyState,
+                    binarySensorState,
                     enabledState,
                     luminanceState
                 }
             }
 
             //Send the detected event
-            if (PIROccupancyState.state == "on") {
+            if (binarySensorState.state == "on") {
                 clearTimeout(notDetectedTimeout);
                 if (config.turnOnAfterMs) {
                     detectedTimeout = setTimeout(() => {
@@ -113,7 +113,7 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
             }
 
             //Send the not detected event
-            if (PIROccupancyState.state == "off") {
+            if (binarySensorState.state == "off") {
                 clearTimeout(detectedTimeout);
                 if (config.turnOffAfterMs) {
                     notDetectedTimeout = setTimeout(() => {
@@ -137,5 +137,5 @@ export = function PIRControlConfigNode(RED: NodeRED.NodeAPI) {
         }
     }
 
-    RED.nodes.registerType("PIR-control-config-node", register);
+    RED.nodes.registerType("binary-sensor-config-node", register);
 }

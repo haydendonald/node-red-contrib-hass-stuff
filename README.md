@@ -590,24 +590,14 @@ A node that controls lights with general scenes that adjust throughout the day w
 1. [Hue Scene Presets](https://github.com/Hypfer/hass-scene_presets)
 2. [HASS Sun](https://www.home-assistant.io/integrations/sun/)
 
-## PIR
+## Binary Sensor
 
-A node that simplifies control of a PIR
-
-### Features
-* Entity to enable/disable the PIR
-* Disable the PIR with luminance sensor value
-* Set timeout before the PIR is triggered to be on/off
-
-## Door Sensor
-*TODO*
-
-A node that simplifies control of a door sensor
+A node that adds some useful functionality to a binary sensor like a PIR or door sensor
 
 ### Features
 * Entity to enable/disable the sensor
 * Disable the sensor with luminance sensor value
-* Set timeout before the PIR is triggered to be on/off
+* Set timeout before the sensor is triggered to be on/off
 
 ## Curtain Control
 

@@ -3,15 +3,15 @@ import { BaseNode } from "../baseNode";
 import { BaseConfigNode } from "../baseConfigNode";
 
 //Node
-export interface PIRControlNodeConfig extends NodeRED.NodeDef {
-    PIRControlConfigNode: string;
+export interface BinarySensorNodeConfig extends NodeRED.NodeDef {
+    binarySensorConfigNode: string;
 }
-export interface PIRControlNode extends BaseNode { }
+export interface BinarySensorNode extends BaseNode { }
 
 //Config
-export interface PIRControlConfigNodeConfig extends NodeRED.NodeDef {
+export interface BinarySensorConfigNodeConfig extends NodeRED.NodeDef {
     connectionsConfigNode: string;
-    PIROccupancyEntity: string;
+    binarySensorEntity: string;
     luminanceEntity: string;
     minBrightnessLevel: string;
     maxBrightnessLevel: string;
@@ -20,4 +20,4 @@ export interface PIRControlConfigNodeConfig extends NodeRED.NodeDef {
     enabledByDefault: boolean;
     setDefaultOnRedeploy: boolean;
 }
-export interface PIRControlConfigNode extends BaseConfigNode {}
+export interface BinarySensorConfigNode extends BaseConfigNode {}

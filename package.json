@@ -29,8 +29,8 @@
       "LightControlConfigNode": "dist/LightControl/lightControlConfigNode.js",
       "LightControlNode": "dist/LightControl/lightControlNode.js",
       "EVChargingPriceNode": "dist/EVChargingPrice/EVChargingPriceNode.js",
-      "PIRControlConfigNode": "dist/PIRControl/PIRControlConfigNode.js",
-      "PIRControlNode": "dist/PIRControl/PIRControlNode.js",
+      "BinarySensorConfigNode": "dist/BinarySensor/binarySensorConfigNode.js",
+      "BinarySensorNode": "dist/BinarySensor/binarySensorNode.js",
       "CurtainControlConfigNode": "dist/CurtainControl/curtainControlConfigNode.js",
       "CurtainControlNode": "dist/CurtainControl/curtainControlNode.js"
     }
