@@ -69,11 +69,11 @@ export = function CurtainControlConfigNode(RED: NodeRED.NodeAPI) {
                 friendlyName: `${self.name} - Position`,
                 id: getEntityId("select", `${self.name}_position`),
                 options: [
-                    "Open",
-                    "Half",
-                    "Close"
+                    "open",
+                    "half",
+                    "close"
                 ],
-                defaultState: "Close",
+                defaultState: "close",
                 creationCallback: (state: any, response: NodeRED.NodeMessage) => {
                     wantedPositionState = state;
                 },
@@ -154,30 +154,30 @@ export = function CurtainControlConfigNode(RED: NodeRED.NodeAPI) {
         }
 
         function handle() {
-            let position = wantedPositionState;
+                let position = wantedPositionState;
 
             //Don't do anything if we are disabled
             if (enabledState == "on") {
                 //Override the position if we are not closed and any of the conditions match
-                if (position != "Close") {
+                if (position != "close") {
                     //If the luminance matches the curtain closed luminance config, force the position to close
-                    if (conditionsMatches(config.curtainClosedLuminance)) { position = "Close"; }
+                    if (conditionsMatches(config.curtainClosedLuminance)) { position = "close"; }
 
                     //If the luminance matches the curtain half luminance config, force the position to half
-                    else if (conditionsMatches(config.curtainHalfLuminance)) { position = "Half"; }
+                    else if (conditionsMatches(config.curtainHalfLuminance)) { position = "half"; }
                 }
             }
 
             //Control the curtain!
             switch (position) {
-                case "Open": {
+                case "open": {
                     //Don't do it if the curtain is already open
                     if (coverState?.attributes?.current_position == 100) { return; }
 
                     connectionsConfigNode.sendHASSAction("cover.open_cover", { entity_id: [config.coverEntity] }, {});
                     break;
                 }
-                case "Half": {
+                case "half": {
                     //Don't do it if the curtain is already half
                     if (coverState?.attributes?.current_position == config.halfPosition) { return; }
 
@@ -186,7 +186,7 @@ export = function CurtainControlConfigNode(RED: NodeRED.NodeAPI) {
                     });
                     break;
                 }
-                case "Close": {
+                case "close": {
                     //Don't do it if the curtain is already closed
                     if (coverState?.attributes?.current_position == 0) { return; }
 
