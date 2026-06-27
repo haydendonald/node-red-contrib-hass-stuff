@@ -610,15 +610,12 @@ A node that simplifies control of a door sensor
 * Set timeout before the PIR is triggered to be on/off
 
 ## Curtain Control
-*TODO*
 
 A node that provides control of a cover
 
 ### Features
-* Adds buttons to set the curtain to open/half/closed
-* Have the curtain close on luminance sensor value
-* Have curtain be closed at certain hours
-* Have curtain be half at certain hours
+* Adds a select to select a "wanted" position for the cover
+* Have the curtain close/half on luminance/time conditions
 
 ## EV Charging Price
 

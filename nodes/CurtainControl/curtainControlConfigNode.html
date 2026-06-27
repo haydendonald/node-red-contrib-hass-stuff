@@ -1,0 +1,86 @@
+<script type="text/javascript" id="node-curtain-control-config-node">
+    RED.nodes.registerType("curtain-control-config-node", {
+        category: "config",
+        defaults: {
+            name: { value: "", required: true },
+            connectionsConfigNode: { value: "", type: "connections-config-node", required: true },
+            coverEntity: { value: "", required: true },
+            luminanceEntity: { value: "", required: false },
+            curtainClosedLuminance: { value: "", required: false },
+            curtainHalfLuminance: { value: "", required: false },
+            halfPosition: { value: "50", required: true },
+            enabledByDefault: { value: true, default: true, required: true },
+            setDefaultOnRedeploy: { value: true, default: false, required: true }
+        },
+        label: function () {
+            return this.name || "Curtain Control Config"
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="curtain-control-config-node">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-connectionsConfigNode">Config</label>
+        <input type="text" id="node-config-input-connectionsConfigNode" />
+    </div>
+    <div class="form-row">
+        <p>The entity id of the cover entity</p>
+        <label for="node-config-input-coverEntity">Cover Entity</label>
+        <input type="text" id="node-config-input-coverEntity" />
+    </div>
+    <div class="form-row">
+        <p>The entity id of the luminance sensor. If not set will disable this feature</p>
+        <label for="node-config-input-luminanceEntity">Luminance Entity</label>
+        <input type="text" id="node-config-input-luminanceEntity" />
+    </div>
+    <div class="form-row">
+        <p>The conditions to force close the curtain</p>
+        <p>This is a string value in the form <code>[luminance] [and/or] [hour of day]</code>, options include the following:</p>
+        <ul>
+            <li>Value less than the value: &lt;100</li>
+            <li>Value greater than the value: &gt;100</li>
+            <li>Value range: 100-200</li>
+            <li>Combination of range and multiple values separated by comma: 100-200,300,&lt;500,&gt;600</li>
+            <li>[disabled] will disable this feature</li>
+        </ul>
+        <p>An example would be <code>&gt;400 or 13-15</code>. Which means the curtain will close if the luminance is greater than 400 or the time is between 1 PM and 3 PM.</p>
+        <label for="node-config-input-curtainClosedLuminance">Curtain Closed Luminance</label>
+        <input type="text" id="node-config-input-curtainClosedLuminance" />
+    </div>
+    <div class="form-row">
+        <p>The conditions to force the curtain to the half position</p>
+        <p>This is a string value in the form <code>[luminance] [and/or] [hour of day]</code>, options include the following:</p>
+        <ul>
+            <li>Value less than the value: &lt;100</li>
+            <li>Value greater than the value: &gt;100</li>
+            <li>Value range: 100-200</li>
+            <li>Combination of range and multiple values separated by comma: 100-200,300,&lt;500,&gt;600</li>
+            <li>[disabled] will disable this feature</li>
+        </ul>
+        <p>An example would be <code>100-200 and >15</code>. Which means the curtain will move to the half position if the luminance is between 100 and 200 and the time is after 3 PM.</p>
+        <label for="node-config-input-curtainHalfLuminance">Curtain Half Luminance</label>
+        <input type="text" id="node-config-input-curtainHalfLuminance" />
+    </div>
+    <div class="form-row">
+        <p>The position of the curtain when the half button is pressed</p>
+        <label for="node-config-input-halfPosition">Half Position</label>
+        <input type="number" id="node-config-input-halfPosition" min="0" max="100" />
+    </div>
+    <div class="form-row">
+        <p>The default state of the enabled boolean entity when it's added to Home Assistant</p>
+        <label for="node-config-input-enabledByDefault">Enabled By Default</label>
+        <input type="checkbox" id="node-config-input-enabledByDefault" />
+    </div>
+    <div class="form-row">
+        <p>When NodeRed redeploys always set the default state above, if disabled will just retain the current state in Home Assistant</p>
+        <label for="node-config-input-setDefaultOnRedeploy">Set Default On Redeploy</label>
+        <input type="checkbox" id="node-config-input-setDefaultOnRedeploy" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="curtain-control-config-node">
+</script>
