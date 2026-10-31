@@ -618,4 +618,8 @@ This just estimates the value, useful for if you don't have the ability to monit
 * Calculates how much money per month i spend on charging my EV
 * Detects if the car was charged at home, ignoring fast charging sessions
 
+## Ping Sensor
+
+A basic node that pings an ip address, will add an entity for if that device is seen or not
+
 // MIMO //
