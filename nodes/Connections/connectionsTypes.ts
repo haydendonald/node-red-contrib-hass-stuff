@@ -139,10 +139,11 @@ export interface ConnectionsConfigNode extends BaseConfigNode {
         friendlyName: string,
         id?: string,
         defaultState?: any,
+        defaultAttributes?: any,
         forceDefaultStateOnCreation?: boolean,
         creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
         changedCallback?: (state: any, response: NodeRED.NodeMessage) => void
-    }) => (state: any) => void;
+    }) => (state: any, extraAttributes?: any) => void;
 
     /**
      * Send a message to the HASS API Node

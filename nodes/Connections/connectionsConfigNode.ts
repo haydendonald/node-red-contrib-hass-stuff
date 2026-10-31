@@ -462,48 +462,53 @@ export = function ConnectionsConfigNode(RED: NodeRED.NodeAPI) {
             friendlyName: string,
             id?: string,
             defaultState?: any,
+            defaultAttributes?: any,
             forceDefaultStateOnCreation?: boolean,
             creationCallback?: (state: any, response: NodeRED.NodeMessage) => void,
             changedCallback?: (state: any, response: NodeRED.NodeMessage) => void
         }) {
             const entityId = options.id ?? getEntityId("number", options.friendlyName);
-            const data = (state: any) => {
-                //If the state is not set, set it to the default state, otherwise "unknown"
-                let setState = state;
-                if (setState === undefined || setState == "unknown") { setState = options.defaultState; }
-                if (setState === undefined) { setState = "unknown"; }
-
+            const getState = (state: any) => {
+                if (state === undefined || state == "unknown") { state = options.defaultState; }
+                if (state === undefined) { state = "unknown"; }
+                return state;
+            };
+            const getAttributes = (extraAttributes?: any) => {
                 return {
-                    state: setState,
-                    attributes: {
-                        friendly_name: options.friendlyName
-                    }
+                    ...(extraAttributes ?? {}),
+                    friendly_name: options.friendlyName,
+                }
+            };
+            const getData = (state: any, extraAttributes?: any) => {
+                return {
+                    state: getState(state),
+                    attributes: getAttributes(extraAttributes)
                 }
             };
 
-            //Add the button to HASS
-            const addEntity = (state: any) => {
-                self.addHASSEntity(entityId, data(state), options.creationCallback ? (response: any) => {
+            //Add the sensor to HASS
+            const addEntity = (state: any, extraAttributes?: any) => {
+                self.addHASSEntity(entityId, getData(state, extraAttributes), options.creationCallback ? (response: any) => {
                     options.creationCallback!(response.payload.state, response);
                 } : undefined);
             }
 
             if (options.forceDefaultStateOnCreation == true) {
-                addEntity(options.defaultState);
+                addEntity(options.defaultState, options.defaultAttributes);
             }
             else {
                 //Search for the last state and create us with that state if we find it, otherwise create it with the default state
                 self.findHASSLastState({
                     entityId,
                 }, (data) => {
-                    addEntity(data && data.state ? data.state : undefined);
+                    addEntity(data && data.state ? data.state : data.defaultState, data?.attributes ? data.attributes : options.defaultAttributes);
                 });
             }
 
-            return (state: any) => {
+            return (state: any, extraAttributes?: any) => {
                 self.sendHASSAPI("http", "post", "/api/states/" + entityId, (response) => {
                     options.changedCallback?.(state, response);
-                }, undefined, data(state));
+                }, undefined, getData(state, extraAttributes));
             }
         }
 
