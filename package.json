@@ -3,8 +3,9 @@
   "version": "1.9.0",
   "description": "A collection of stuff I use on my Node Red + Home Assistant server. This could be of use for others, i don't know..",
   "devDependencies": {
-    "@types/node": "^18.14.0",
+    "@types/node": "^18.19.130",
     "@types/node-red": "^1.2.1",
+    "@types/ping": "^0.4.4",
     "typescript": "^4.9.5"
   },
   "files": [
@@ -32,10 +33,14 @@
       "BinarySensorConfigNode": "dist/BinarySensor/binarySensorConfigNode.js",
       "BinarySensorNode": "dist/BinarySensor/binarySensorNode.js",
       "CurtainControlConfigNode": "dist/CurtainControl/curtainControlConfigNode.js",
-      "CurtainControlNode": "dist/CurtainControl/curtainControlNode.js"
+      "CurtainControlNode": "dist/CurtainControl/curtainControlNode.js",
+      "PingSensorNode": "dist/PingSensor/pingSensorNode.js"
     }
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "ping": "^1.0.0"
   }
 }

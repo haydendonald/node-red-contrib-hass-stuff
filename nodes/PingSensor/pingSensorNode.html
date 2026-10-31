@@ -1,0 +1,48 @@
+<script type="text/javascript" id="node-ping-sensor-node">
+    RED.nodes.registerType("ping-sensor-node", {
+        category: "HASS Stuff",
+        color: "#ffcc00",
+        inputs: 0,
+        outputs: 0,
+        icon: "bridge.svg",
+        paletteLabel: "Ping Sensor",
+        defaults: {
+            name: { value: "", required: true },
+            connectionsConfigNode: { value: '', type: "connections-config-node", required: true },
+            ipAddress: { value: '', required: true },
+            interval: { value: 1000, required: true, validate: RED.validators.number() },
+            timeout: { value: 1000, required: true, validate: RED.validators.number() },
+        },
+        label: function () {
+            return this.name || "Ping Sensor"
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="ping-sensor-node">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connectionsConfigNode">Config</label>
+        <input type="text" id="node-input-connectionsConfigNode" />
+    </div>
+    <div class="form-row">
+        <p>The IP Address to ping</p>
+        <label for="node-input-ipAddress">IP Address</label>
+        <input type="text" id="node-input-ipAddress" />
+    </div>
+    <div class="form-row">
+        <p>The interval between pings in milliseconds</p>
+        <label for="node-input-interval">Interval</label>
+        <input type="number" step="1" id="node-input-interval" />
+    </div>
+    <div class="form-row">
+        <p>The time threshold in milliseconds for the device to stay in its current state before considering it changed</p>
+        <label for="node-input-timeout">Timeout</label>
+        <input type="number" step="1" id="node-input-timeout" />
+    </div>
+</script>
+<script type="text/html" data-help-name="ping-sensor-node">
+</script>
